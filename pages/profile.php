@@ -6,6 +6,27 @@ $obj_images = $DBAccess->getImagesByUser($username);
 
 ?>
 <div class="profile_content">
+    <!-- Action confirmation modal -->
+        <div class="modal" id="confirmationBox" tabindex="-1" aria-labelledby="confirmationBox" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <nav>Do you really wish to delete your profile?</nav>
+                    <br>
+                    <form action="index.php?page=profileAction" method="POST" id="deleteProfileForm">
+                    <input type="hidden" id="profileId" name="id" value="<?php echo $userId ?>">
+                    <input type="hidden" id="profileAction" name="action" value="delete">
+                    <button class="btn btn-success" type="button" id="btnNo" data-bs-dismiss="modal">No</button>
+                    <button class="btn btn-danger" type="submit" id="btnYes">Yes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a>Home</a></li>
@@ -32,6 +53,7 @@ $obj_images = $DBAccess->getImagesByUser($username);
             <p>Active images: <?php echo $obj_userstats[0]->active_uploaded ?></p>
         </div>
     </div>
+    
     <div class="card uploaded_images">
         <div class="card-body">
             <h5 class="card-title">Your images</h5>
@@ -52,20 +74,21 @@ $obj_images = $DBAccess->getImagesByUser($username);
                     </div>
                     <?php
                 }
+                echo "</div>";
             } else {
                 echo "<p>You have no uploaded images.</p>";
             }
             ?>
         </div>
     </div>
-    <div class="card">
+    <div class="card profile_actions">
         <div class="card-body">
             <h5 class="card-title">Profile Actions</h5>
             <br>
-            <form action="index.php?page=profileAction" method="POST">
+            <form action="index.php?page=profileAction" method="POST" id="deleteProfileForm">
                 <input type="hidden" id="profileId" name="id" value="<?php echo $userId ?>">
                 <input type="hidden" id="profileAction" name="action" value="delete">
-                <button class="btn btn-danger">Delete account</button>
+                <nav><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationBox">Delete account</a>&nbsp;<i>Note: All of your uploaded images will also be deleted</i></nav>
             </form>
         </div>
     </div>
