@@ -29,6 +29,9 @@
                     <?php
                 } else {
                     ?>
+					<li class="nav-item">
+						<a class="nav-link text-light">Guest Access</a>
+					</li>
                     <li class="nav-item dropdown-center">
 					<a class="nav-link dropdown-toggle text-light" href="#" data-bs-toggle="dropdown"
 						aria-expanded="false">Session</a>

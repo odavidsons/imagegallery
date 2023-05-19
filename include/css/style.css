@@ -108,6 +108,11 @@ html {
         color: white;
         scale: 1.1;
     }
+/* Login Page */
+    .profile_content {
+        width: 80%;
+        margin: 0 auto;
+    }
 /* Upload Page */
     .upload_content {
         width: 80%;

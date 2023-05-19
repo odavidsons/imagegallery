@@ -1,13 +1,16 @@
 <?php
 include('PHP/dbconnect.php');
 include('PHP/DBAccess.php');
+include('PHP/DBUsers.php');
 $dbconnect = new dbconnect();
-$DBAccess = new dbAccess($dbconnect->conn);
+$DBAccess = new DBAccess($dbconnect->conn);
+$DBUsers = new DBUsers($dbconnect->conn);
 
 $page = $_GET['page'];
 $site_path = '/var/www/html/imagegallery/';
 
 session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +61,9 @@ session_start();
                 break;
             case 'upload':
                 include('pages/upload.php');
+                break;
+            case 'profile':
+                include('pages/profile.php');
                 break;
             //PHP actions
             case 'imageAction':

@@ -18,6 +18,7 @@ $obj_images = $DBAccess->getImages();
             <li class="breadcrumb-item active" aria-current="page">Search</li>
         </ol>
         </nav>
+        
         <div class="home_images">
             <div class="row row-cols-1 row-cols-md-auto g-4">
             <?php

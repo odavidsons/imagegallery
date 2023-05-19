@@ -29,12 +29,36 @@ class DBUsers{
         return $vect;
     }
 
+    function getUserId($username) {
+        $query = "SELECT id FROM userinfo WHERE username = '".$username."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getUserId()";
+            exit;
+        }
+        $row = pg_fetch_row($result, 0);
+        $id = $row[0];
+        return ($id);
+    }
+
     function getUserById($id) {
         $query = "SELECT * FROM userinfo WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
             echo "Error in function getUserById()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
+    function getStatsById($id) {
+        $query = "SELECT * FROM userstats WHERE userid = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getStatsById()";
             exit;
         }
         return ($this->parseResult($result));
@@ -50,9 +74,29 @@ class DBUsers{
         }
         $result = pg_query($this->conn, "SELECT max(id) FROM userinfo");
         $row = pg_fetch_row($result, 0);
-        $id = $row[0];
-        return $id;
+        $userId = $row[0];
+        //Create entry for user stats in DB
+        $statsId = $this->insertUserStats($userId);
+        if (!isset($statsId)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertUserStats()";
+            exit;
+        }
+        return $userId;
     }
 
+    function insertUserStats($userId) {
+        $query = "INSERT INTO userstats (userid) VALUES ('".$userId."')";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertUserStats()";
+            exit;
+        }
+        $result = pg_query($this->conn, "SELECT max(id) FROM userstats");
+        $row = pg_fetch_row($result, 0);
+        $statsId = $row[0];
+        return $statsId;
+    }
 }
 ?>
