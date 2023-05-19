@@ -1,12 +1,13 @@
 <?php 
 $name = $_POST['name'];
 $description = $_POST['description'];
+
 if (isset($_SESSION['username'])) {
     $uploadedBy = $_SESSION['username'];
 } else {
     $uploadedBy = 'Guest user';
 }
-
+$userId = $DBUsers->getUserId($uploadedBy); //Get the user id
 $error = "";
 $uploadOk = 1;
 
@@ -23,34 +24,43 @@ if ($_FILES['imageFile']['tmp_name']!=''){
     if($check == "image/png" || $check == "image/jpeg") {
         $uploadOk = 1;
     } else {
-        $error = "Ficheiro não é uma imagem";
+        $error = "File is not an image";
         $uploadOk = 0;
     }
     //Allow selected file types
     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" ) {
-        $error = "Deve fazer upload de um ficheiro do tipo jpg,png ou jpeg.";
+        $error = "You must upload a file in one of these formats: png/jpeg/jpg.";
         $uploadOk = 0;
     }
     //Check if file already exists
     if (file_exists($target_file)) {
-        $error = "Já existe um ficheiro com esse nome";
+        $error = "There already is a file with that name uploaded";
         $uploadOk = 0;
     }
     //Check file size limit( 10MB )
     if ($_FILES["imageFile"]["size"] > 10000000) {
-        $error = "Ficheiro demasiado grande";
+        $error = "File is too big";
         $uploadOk = 0;
     }
 } else {
     //No file selected
     $image_selected = false;
-    $error = "No image selected!";
+    $error = "No valid image selected!";
 }
 
 if ($image_selected == true && $uploadOk == 1) {
     move_uploaded_file($_FILES["imageFile"]["tmp_name"], $target_file);
     //Insert image entry into database table
     $imageId = $DBAccess->insertImage($name,$imageSitePath,$description,$uploadedBy);
+    $obj_userstats = $DBUsers->getStatsByUserId($userId);
+    if (isset($obj_userstats)) {
+        //Update the current user's stats
+        $total = ($obj_userstats[0]->total_uploaded + 1);
+        $active = ($obj_userstats[0]->active_uploaded + 1);
+        $DBUsers->updateUSerStats($userId,$total,$active);
+    } else {
+        $error = "There was an error uploading your image";
+    }
     if (isset($imageId)) {
         //$result = pg_query($dbconnect->conn, "SELECT MAX(id) FROM images");
         header('index.php?page=upload&upload=success&id='.$imageId);
@@ -63,8 +73,8 @@ if ($image_selected == true && $uploadOk == 1) {
         $error = "There was an error uploading your image";
     }
 }
-header('index.php?page=upload&error='.$error);
+header('index.php?page=upload&upload=failed&error='.$error);
 ?>
 <script type="text/javascript">
-    location = "index.php?page=upload&error=<?php echo $error ?>"
+    location = "index.php?page=upload&upload=failed&error=<?php echo $error ?>"
 </script>

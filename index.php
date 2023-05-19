@@ -69,6 +69,9 @@ session_start();
             case 'imageAction':
                 include('include/image_action.php');
                 break;
+            case 'profileAction':
+                include('include/profile_action.php');
+                break;
             case 'uploadAction':
                 include('include/upload_image.php');
                 break;

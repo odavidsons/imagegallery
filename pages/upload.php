@@ -40,7 +40,7 @@ if(isset($_GET['id'])) {
                     <label for="uploadImage">Select your image:</label>
                     <input type="file" name="imageFile" class="form-control" id="uploadImage" required>
                     <label for="uploadName" class="form-label">Image name:</label>
-                    <input type="password" name="name" class="form-control" id="uploadName" required>
+                    <input type="text" name="name" class="form-control" id="uploadName" required>
                     <label for="uploadDescription">Description:</label>
                     <textarea class="form-control" name="description" placeholder="Write something about your image" id="uploadDescription" rows="6"></textarea>
                     <div id="formError" style="color:red;" class="form-text"><?php echo $error ?></div>

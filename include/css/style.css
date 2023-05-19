@@ -69,7 +69,7 @@ html {
         height: 100%;
     }
     .home_images {
-        width: 90%;
+        width: 95%;
         margin: 0 auto;
     }
     .home_images .card a:hover {
@@ -82,6 +82,9 @@ html {
     }
     .viewimage_content img {
         width: 40%;
+    }
+    .viewimage_content .card {
+        margin: 0 15px 0 15px;
     }
     .viewimage_content .image_info {
         width: 50%;
@@ -102,6 +105,7 @@ html {
     }
     #btn-delete {
         border: solid 1px rgb(194, 59, 59);
+        margin: 0 10px 0 0;
     }
     #btn-delete:hover {
         background-color: rgb(194, 59, 59);
@@ -112,6 +116,12 @@ html {
     .profile_content {
         width: 80%;
         margin: 0 auto;
+    }
+    .uploaded_images {
+        margin: 20px 0 0 0;
+    }
+    .uploaded_images .card a:hover {
+        filter: blur(1px);
     }
 /* Upload Page */
     .upload_content {
@@ -133,4 +143,8 @@ html {
 .formError {
     display: none;
     color: red;
+}
+.alert {
+    margin: 0 auto;
+    width: 80%;
 }

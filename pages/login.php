@@ -36,6 +36,6 @@ if (isset($username) && isset($password)) {
     <input type="password" name="password" class="form-control" id="inputPassword" required>
   </div>
   <div id="formError" style="color:red;" class="form-text"><?php echo $error ?></div>
-  <button type="submit" class="btn btn-dark">Register</button>
+  <button type="submit" class="btn btn-dark">Login</button>
 </form>
 </div>

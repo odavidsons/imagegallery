@@ -1,7 +1,9 @@
 <?php
+
 $obj_images = $DBAccess->getImages();
 ?>
 <div class="container-flex">
+    <!-- Sidenav -->
     <div class="home_sidenav">
         <div class="sidenav_item">
             <nav>Filters</nav>
@@ -11,6 +13,7 @@ $obj_images = $DBAccess->getImages();
         </div>
     </div>
 
+    <!-- Breadcrumbs -->
     <div class="home_content">
         <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -19,8 +22,19 @@ $obj_images = $DBAccess->getImages();
         </ol>
         </nav>
         
+        <?php
+        //Alert messages
+        if (isset($_GET['accountdelete']) && $_GET['accountdelete'] == "success") {
+            echo "<div class='alert alert-success alert-dismissible fade show' role='alert' id='uploadAlert'>
+            Account deleted successfully!
+            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+        }
+        ?>
+
+        <!-- Image List -->
         <div class="home_images">
-            <div class="row row-cols-1 row-cols-md-auto g-4">
+            <div class="row row-cols-1 row-cols-md-auto g-3">
             <?php
             if (count($obj_images) > 0) {
                 for ($i = 0;$i < count($obj_images);$i++) {
