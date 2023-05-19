@@ -4,7 +4,7 @@ $description = $_POST['description'];
 if (isset($_SESSION['username'])) {
     $uploadedBy = $_SESSION['username'];
 } else {
-    $uploadedBy = 'Anonymous';
+    $uploadedBy = 'Guest user';
 }
 
 $error = "";
@@ -50,12 +50,9 @@ if ($_FILES['imageFile']['tmp_name']!=''){
 if ($image_selected == true && $uploadOk == 1) {
     move_uploaded_file($_FILES["imageFile"]["tmp_name"], $target_file);
     //Insert image entry into database table
-    $query = "INSERT INTO images (name,path,description,uploaded_by) VALUES ('".$name."','".$imageSitePath."','".$description."','".$uploadedBy."')";
-    $result = pg_query($dbconnect->conn, $query);
-    if (isset($result)) {
+    $imageId = $DBAccess->insertImage($name,$imageSitePath,$description,$uploadedBy);
+    if (isset($imageId)) {
         //$result = pg_query($dbconnect->conn, "SELECT MAX(id) FROM images");
-        $result = pg_fetch_assoc(pg_query($dbconnect->conn, "SELECT MAX(id) FROM images"));
-        $imageId = $result['id'];
         header('index.php?page=upload&upload=success&id='.$imageId);
         ?>
         <script type="text/javascript">

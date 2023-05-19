@@ -41,5 +41,43 @@ class DBAccess {
         }
         return ($this->parseResult($result));
     }
+
+    function insertImage($name,$path,$description,$author) {
+        $query = "INSERT INTO images (name,path,description,uploaded_by) VALUES ('".$name."','".$path."','".$description."','".$author."')";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            exit;
+        }
+        $result = pg_query($this->conn, "SELECT MAX(id) FROM images");
+        $row = pg_fetch_row($result, 0);
+        $imgId = $row[0];
+        return ($imgId);
+    }
+
+    function deleteImage($id) {
+        //Get the image path and delete the file from the website
+        $query = "SELECT path FROM images WHERE id ='".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            exit;
+        }
+        $row = pg_fetch_row($result, 0);
+        $delete_file = unlink(''.$row[0].'');
+        //If file unlink fails
+        if ($delete_file == false) {
+            echo pg_last_error($this->conn);
+            exit;
+        }
+
+        $query = "DELETE FROM images WHERE id = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            exit;
+        }
+        return true;
+    }
 }
 ?>

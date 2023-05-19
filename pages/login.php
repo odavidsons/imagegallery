@@ -13,6 +13,7 @@ if (isset($username) && isset($password)) {
     } else {
         session_start();
         $_SESSION['username'] = $username;
+        $_SESSION['usertype'] = "0";
         header('index.php?page=home&login=success');
         ?>
         <script type="text/javascript">

@@ -1,10 +1,13 @@
 <?php
-$error = "";
-$uploadStatus = "";
-$imageId = "";
-$error = $_GET['error'];
-$uploadStatus = $_GET['upload'];
-$imageId = $_GET['id'];
+if(isset($_GET['error'])) {
+    $error = $_GET['error'];
+}
+if(isset($_GET['upload'])) {
+    $uploadStatus = $_GET['upload'];
+}
+if(isset($_GET['id'])) {
+    $imageId = $_GET['id'];
+}
 ?>
 <div class="upload_content">
     <nav aria-label="breadcrumb">

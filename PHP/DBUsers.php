@@ -29,6 +29,17 @@ class DBUsers{
         return $vect;
     }
 
+    function getUserById($id) {
+        $query = "SELECT * FROM userinfo WHERE id = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getUserById()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
     function insertUser($username,$password) {
         $query = "INSERT INTO userinfo (username,password) VALUES ('".$username."','".$password."')";
         $result = pg_query($this->conn, $query);
@@ -37,8 +48,10 @@ class DBUsers{
             echo "Error in function insertUser()";
             exit;
         }
-        $userId = pg_query($this->conn, "SELECT max(id) FROM userinfo");
-        return $userId;
+        $result = pg_query($this->conn, "SELECT max(id) FROM userinfo");
+        $row = pg_fetch_row($result, 0);
+        $id = $row[0];
+        return $id;
     }
 
 }

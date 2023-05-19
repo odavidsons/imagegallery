@@ -19,18 +19,19 @@ $obj_images = $DBAccess->getImages();
         </ol>
         </nav>
         <div class="home_images">
-            
+            <div class="row row-cols-1 row-cols-md-auto g-4">
             <?php
             if (count($obj_images) > 0) {
                 for ($i = 0;$i < count($obj_images);$i++) {
                     ?>
-                    <div class="card text-center" style="width: 18rem;">
-                    <a href="index.php?page=viewimage&id=<?php echo $obj_images[$i]->id ?>">
-                    <img src="<?php echo $obj_images[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_images[$i]->name ?>">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $obj_images[$i]->name ?></h5>
-                        <a href="#" class="btn btn-dark">Action</a>
+                    <div class="col">
+                    <div class="card h-100 text-center" style="width: 18rem;">
+                        <a href="index.php?page=viewimage&id=<?php echo $obj_images[$i]->id ?>">
+                        <img src="<?php echo $obj_images[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_images[$i]->name ?>">
+                        </a>
+                        <div class="card-footer text-body-secondary">
+                            Name: <?php echo $obj_images[$i]->name ?>
+                        </div>
                     </div>
                     </div>
                     <?php
@@ -39,6 +40,7 @@ $obj_images = $DBAccess->getImages();
                 echo "There are no images uplaoded to the website";
             }
             ?>
+            </div>
         </div>
     </div>
 </div>
