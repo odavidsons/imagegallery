@@ -43,7 +43,14 @@ if(isset($_GET['id'])) {
                     <label for="uploadDescription">Description:</label>
                     <textarea class="form-control" name="description" placeholder="Write something about your image" id="uploadDescription" rows="6"></textarea>
                     <div id="formError" style="color:red;" class="form-text"><?php echo $error ?></div>
-                    <button type="submit" class="btn btn-dark">Upload</button>
+                    <?php
+                        if (!isset($_SESSION['username'])) {
+                            echo "<nav><button type='submit' class='btn btn-dark' disabled>Upload</button>&nbsp;<b>* Please login to be able to upload images.</b></nav>";
+                        } else {
+                            echo "<button type='submit' class='btn btn-dark'>Upload</button>";
+                        }
+                    ?>
+                    
                 </form>
             </div>
             <?php 
