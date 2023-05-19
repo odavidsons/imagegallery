@@ -7,8 +7,7 @@ $obj_image = $DBAccess->getImageById($img_id);
 <div class="viewimage_content">
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a>Home</a></li>
-        <li class="breadcrumb-item"><a href="index.php?page=home">Search</a></li>
+        <li class="breadcrumb-item"><a href="index.php?page=home">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">View</li>
     </ol>
     </nav>

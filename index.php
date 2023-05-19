@@ -50,6 +50,9 @@ session_start();
             case 'home':
                 include('pages/home.php');
                 break;
+            case 'search':
+                include('pages/search.php');
+                break;
             case 'viewimage':
                 include('pages/viewimage.php');
                 break;

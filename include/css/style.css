@@ -27,6 +27,12 @@ html {
         background-color: rgb(50, 57, 61);
         font-size: 19px;
     }
+    .header .nav-item:hover {
+        background-color: rgb(73, 84, 92);
+    }
+    .header .dropdown-center a:active {
+        background-color: rgb(192, 213, 236);
+    }
     .content {
         height: calc(100vh - 50px);
         width: 100vw;
@@ -112,7 +118,7 @@ html {
         color: white;
         scale: 1.1;
     }
-/* Login Page */
+/* Profile Page */
     .profile_content {
         width: 80%;
         margin: 0 auto;
@@ -122,6 +128,14 @@ html {
     }
     .uploaded_images .card a:hover {
         filter: blur(1px);
+    }
+    .profile_actions {
+        margin: 20px 0 0 0;
+    }
+    #confirmationBox {
+
+        display: none;
+
     }
 /* Upload Page */
     .upload_content {
@@ -146,5 +160,5 @@ html {
 }
 .alert {
     margin: 0 auto;
-    width: 80%;
+    width: 50%;
 }
