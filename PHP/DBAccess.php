@@ -27,6 +27,7 @@ class DBAccess {
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
+            echo "Error in function getImages()";
             exit;
         }
         return ($this->parseResult($result));
@@ -37,6 +38,18 @@ class DBAccess {
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
+            echo "Error in function getImageById()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
+    function getImagesByUser($username) {
+        $query = "SELECT * FROM images WHERE uploaded_by = '".$username."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getImagesByUser()";
             exit;
         }
         return ($this->parseResult($result));
@@ -47,6 +60,7 @@ class DBAccess {
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
+            echo "Error in function insertImage()";
             exit;
         }
         $result = pg_query($this->conn, "SELECT MAX(id) FROM images");
@@ -55,12 +69,24 @@ class DBAccess {
         return ($imgId);
     }
 
+    function updateImage($id,$name,$description) {
+        $query = "UPDATE images SET name = '".$name."',description = '".$description."' WHERE id = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function updateImage()";
+            exit;
+        }
+        return true;
+    }
+
     function deleteImage($id) {
         //Get the image path and delete the file from the website
         $query = "SELECT path FROM images WHERE id ='".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
+            echo "Error in function deleteImage()";
             exit;
         }
         $row = pg_fetch_row($result, 0);
@@ -68,13 +94,16 @@ class DBAccess {
         //If file unlink fails
         if ($delete_file == false) {
             echo pg_last_error($this->conn);
+            echo "Error in function deleteImage()";
             exit;
         }
 
+        //Delete image entry from DB
         $query = "DELETE FROM images WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
+            echo "Error in function deleteImage()";
             exit;
         }
         return true;

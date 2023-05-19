@@ -53,12 +53,12 @@ class DBUsers{
         return ($this->parseResult($result));
     }
 
-    function getStatsById($id) {
+    function getStatsByUserId($id) {
         $query = "SELECT * FROM userstats WHERE userid = '".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
-            echo "Error in function getStatsById()";
+            echo "Error in function getStatsByUserId()";
             exit;
         }
         return ($this->parseResult($result));
@@ -97,6 +97,28 @@ class DBUsers{
         $row = pg_fetch_row($result, 0);
         $statsId = $row[0];
         return $statsId;
+    }
+
+    function updateUSerStats($userId,$total,$active) {
+        $query = "UPDATE userstats SET total_uploaded = '".$total."',active_uploaded = '".$active."' WHERE userid = '".$userId."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function updateUSerStats()";
+            exit;
+        }
+        return true;
+    }
+
+    function deleteUser($userId) {
+        $query = "DELETE FROM userinfo WHERE id = '".$userId."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function deleteUser()";
+            exit;
+        }
+        return true;
     }
 }
 ?>
