@@ -2,6 +2,10 @@
 
 Simple self hosted image gallery, allowing users to create an account and share their own images or browse what other people have uploaded.
 
+![image](https://github.com/odavidsons/imagegallery/assets/122760540/a75fa31a-9eca-4df3-acb8-14158c5d0e3a)
+
+![image](https://github.com/odavidsons/imagegallery/assets/122760540/326271a7-5732-4ceb-8184-8a4061a39b8e)
+
 ## Dependencies
 - Web server such as apache <br>
 - Postgresql
