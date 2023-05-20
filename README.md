@@ -2,29 +2,36 @@
 
 Simple self hosted image gallery, allowing users to create an account and share their own images or browse what other people have uploaded.
 
-## Dependancies
--Web server such as apache. <br>
--Postgresql.
+## Dependencies
+- Web server such as apache <br>
+- Postgresql
 
 ## Installation
-Either place the project folder or clone the repository into your server folder (ex: for apache, the default path is /var/www/html/
+#1 - Either place the project folder or clone the repository into your server folder (ex: for apache, the default path is "/var/www/html/"
 
-Connect to postgres <br>
+#2 - Connect to postgres <br><br>
 `psql -U postgres`
 
-Create a database called 'imagegallery' <br>
+#3 - Create a database called "imagegallery" <br><br>
 `postgres=# CREATE DATABASE imagegallery` <br>
 
-Connect to the new databse <br>
+#4 - Connect to the new databse <br><br>
 `postgres=# \c imagegallery`
 
-Import the SQL dump file into this new database. It is located in the SQL/ folder inside the project <br>
-`imagegallery=# \i "local path to the dump file"`
+#5 - Import the SQL dump file into this new database. It is located in the SQL/ folder inside the project <br><br>
+`imagegallery=# \i "local path to the dump file"` <br><br>
+Apache default: <br><br>
+`imagegallery=# \i /var/www/html/imagegallery/SQL/imagegallery_db.sql`
 
-Change the configuration variables located in the config file 'config.php to match your host system's postgres credentials and website folder path <br>
-`$_dbhost = 'localhost';\n
- $_dbusername = 'postgres';\n
- $_dbport = '5432';\n
- $_dbpassword = 'postgres';\n
- $_dbname = 'imagegallery';\n\n
- $_path_access = '/var/www/html/imagegallery'`
+#6 - Change the configuration variables located in the config file 'config.php to match your host system's postgres credentials and website folder path <br>
+```php
+$_dbhost = 'localhost';
+$_dbusername = 'postgres';
+$_dbport = '5432';
+$_dbpassword = 'postgres';
+$_dbname = 'imagegallery';
+
+$_path_access = '/var/www/html/imagegallery'`
+``` 
+<br>
+You're done!
