@@ -1,4 +1,5 @@
 <?php
+include('config.php');
 include('PHP/dbconnect.php');
 include('PHP/DBAccess.php');
 include('PHP/DBUsers.php');
@@ -7,7 +8,6 @@ $DBAccess = new DBAccess($dbconnect->conn);
 $DBUsers = new DBUsers($dbconnect->conn);
 
 $page = $_GET['page'];
-$site_path = '/var/www/html/imagegallery/';
 
 session_start();
 

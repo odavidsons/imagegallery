@@ -4,11 +4,12 @@ class dbconnect {
     public $conn;
 
     function __construct() {
-        $dbhost = 'localhost';
-        $dbusername = 'postgres';
-        $dbport = '5432';
-        $dbpassword = 'postgres';
-        $dbname = 'imagegallery';
+
+        $dbhost = $GLOBALS['_dbhost'];
+        $dbusername = $GLOBALS['_dbusername'];
+        $dbport = $GLOBALS['_dbport'];
+        $dbpassword = $GLOBALS['_dbpassword'];
+        $dbname = $GLOBALS['_dbname'];
 
         $this->conn = pg_connect("host=$dbhost port=$dbport dbname=$dbname user=$dbusername password=$dbpassword");
 
