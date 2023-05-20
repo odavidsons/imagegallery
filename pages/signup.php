@@ -15,7 +15,7 @@ if (isset($_GET['error'])) {
   </div>
   <div class="mb-3">
     <label for="inputPassword" class="form-label">Password</label>
-    <input type="password" name="password" class="form-control" id="inputPassword" required>
+    <input type="password" name="password" class="form-control" id="inputPassword" minlength="6" required>
   </div>
   <div id="formError" style="color:red;" class="form-text"><?php echo $error ?></div>
   <p>Already have an account? <a href="index.php?page=login">Login</a></p>
