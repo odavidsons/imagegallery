@@ -22,9 +22,9 @@ Import the SQL dump file into this new database. It is located in the SQL/ folde
 `imagegallery=# \i "local path to the dump file"`
 
 Change the configuration variables located in the config file 'config.php to match your host system's postgres credentials and website folder path <br>
-`$_dbhost = 'localhost'; <br>
- $_dbusername = 'postgres'; <br>
- $_dbport = '5432'; <br>
- $_dbpassword = 'postgres'; <br>
- $_dbname = 'imagegallery'; <br><br>
+`$_dbhost = 'localhost';\n
+ $_dbusername = 'postgres';\n
+ $_dbport = '5432';\n
+ $_dbpassword = 'postgres';\n
+ $_dbname = 'imagegallery';\n\n
  $_path_access = '/var/www/html/imagegallery'`
