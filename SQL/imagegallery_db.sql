@@ -16,6 +16,20 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -216,7 +230,6 @@ COPY public.sessions (id, userid, session, expires) FROM stdin;
 --
 
 COPY public.userinfo (id, username, password, join_date, type) FROM stdin;
-17	admin	123	2023-05-19 12:19:43+01	0
 \.
 
 
@@ -225,7 +238,6 @@ COPY public.userinfo (id, username, password, join_date, type) FROM stdin;
 --
 
 COPY public.userstats (id, total_uploaded, active_uploaded, userid) FROM stdin;
-3	0	0	17
 \.
 
 
@@ -233,7 +245,7 @@ COPY public.userstats (id, total_uploaded, active_uploaded, userid) FROM stdin;
 -- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.images_id_seq', 34, true);
+SELECT pg_catalog.setval('public.images_id_seq', 49, true);
 
 
 --
@@ -247,14 +259,14 @@ SELECT pg_catalog.setval('public.sessions_id_seq', 1, false);
 -- Name: userinfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userinfo_id_seq', 17, true);
+SELECT pg_catalog.setval('public.userinfo_id_seq', 28, true);
 
 
 --
 -- Name: userstats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userstats_id_seq', 3, true);
+SELECT pg_catalog.setval('public.userstats_id_seq', 14, true);
 
 
 --
