@@ -65,7 +65,7 @@ class DBUsers{
     }
 
     function insertUser($username,$password) {
-        $query = "INSERT INTO userinfo (username,password) VALUES ('".$username."','".$password."')";
+        $query = "INSERT INTO userinfo (username,password) VALUES ('".$username."','".password_hash($password,PASSWORD_BCRYPT)."')";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);

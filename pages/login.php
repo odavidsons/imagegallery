@@ -4,22 +4,30 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 $error = "";
 if (isset($username) && isset($password)) {
-    $query = "SELECT * FROM userinfo WHERE username = '".$username."' AND password = '".$password."'";
-    $result = pg_query($dbconnect->conn, $query);
-    $rows = pg_num_rows($result);
-    if ($rows == 0) {
-        $error = "Your login credentials are incorrect";
-        header('index.php?page=login&error='.$error);
+    //Get hashed password from database
+    $result = pg_query($dbconnect->conn, "SELECT password FROM userinfo WHERE username = '".$username."'");
+    $row = pg_fetch_row($result, 0);
+    $password_hash = $row[0];
+    //If result is returned, it means the user exists
+    if ($row == 0) {
+      $error = "This user does not exist";
+      header('index.php?page=login&error='.$error);
     } else {
-        session_start();
-        $_SESSION['username'] = $username;
-        $_SESSION['usertype'] = "0";
-        header('index.php?page=home&login=success');
-        ?>
-        <script type="text/javascript">
-			location = "index.php?page=home&login=success"
-	    </script>
-        <?php
+      //Check if user credentials match
+      if (password_verify($password,$password_hash) == false) {
+          $error = "Your login credentials are incorrect";
+          header('index.php?page=login&error='.$error);
+      } else {
+          session_start();
+          $_SESSION['username'] = $username;
+          $_SESSION['usertype'] = "0";
+          header('index.php?page=home&login=success');
+          ?>
+          <script type="text/javascript">
+        location = "index.php?page=home&login=success"
+        </script>
+          <?php
+      }
     }
 }
 ?>
