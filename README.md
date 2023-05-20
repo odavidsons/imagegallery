@@ -21,9 +21,11 @@ Connect to the new databse <br>
 Import the SQL dump file into this new database. It is located in the SQL/ folder inside the project <br>
 `imagegallery=# \i "local path to the dump file"`
 
-Change the configuration variables located in the project file 'PHP/dbconnect.php to match your host system credentials and postgres user <br>
-`$dbhost = 'localhost';
-  $dbusername = 'postgres';
-  $dbport = '5432';
-  $dbpassword = 'postgres';
-  $dbname = 'imagegallery';`
+Change the configuration variables located in the config file 'config.php to match your host system's postgres credentials and website folder path <br>
+`$_dbhost = 'localhost';
+ $_dbusername = 'postgres';
+ $_dbport = '5432';
+ $_dbpassword = 'postgres';
+ $_dbname = 'imagegallery';
+ 
+ $_path_access = '/var/www/html/imagegallery'`
