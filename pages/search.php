@@ -10,7 +10,7 @@ $obj_images = $DBAccess->getImages();
         </div>
         <div class="sidenav_item">
             <div id="search_name">
-                <input class="form-control" type="text" id="name_input" placeholder="Search image by name">
+                <input class="form-control" type="text" id="name_input" onkeyup="searchByName()" placeholder="Search image by name">
             </div>
         </div>
         <div class="sidenav_item">
@@ -48,7 +48,7 @@ $obj_images = $DBAccess->getImages();
                 for ($i = 0;$i < count($obj_images);$i++) {
                     ?>
                     <div class="col">
-                    <div class="card text-center" style="width: 18rem;" data-count='<?php echo $i+1 ?>'>
+                    <div class="card text-center" style="width: 18rem;" data-count="<?php echo $i+1 ?>" data-name="<?php echo $obj_images[$i]->name ?>">
                         <a href="index.php?page=viewimage&id=<?php echo $obj_images[$i]->id ?>">
                         <img src="<?php echo $obj_images[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_images[$i]->name ?>">
                         </a>
@@ -68,27 +68,40 @@ $obj_images = $DBAccess->getImages();
     </div>
 </div>
 <script>
+    //Get the image card elements and store in an array
+    imageCards = document.getElementsByClassName("card");
+    const images = Array.from(imageCards);
+
+    function searchByName() {
+        //Get the search input
+        var nameInput = document.getElementById("name_input").value.toLowerCase();
+            //Search only the images showed on the page, by using current the range slider value
+            for (i = 0; i < slider.value; i++) {
+                //If the search value relates to the 'name' data value of the imageCard, keep it's style visible
+                if (imageCards[i].getAttribute('data-name').toLowerCase().indexOf(nameInput) > -1) {
+                    imageCards[i].style.display="";
+                } else {
+                    imageCards[i].style.display="none";
+                }
+            }
+    }
+
     //Show range slider value
     var slider = document.getElementById("displayRange");
     var output = document.getElementById("displayRangeOutput");
     output.innerHTML = slider.value; // Display the default slider value
 
-    // Update the value when it is changed
+    // Update the display value when it is changed
     slider.oninput = function() {
         output.innerHTML = this.value;
         var maxImageCount = this.value;
-        //Get the image elements
-        imageCards = document.getElementsByClassName("card");
-        const images = Array.from(imageCards);
         images.forEach((image) => {
             //If the 'count' data value is higher than the allowed ammount of images, hide the element
             if (image.getAttribute('data-count') > parseInt(maxImageCount)) {
                 image.style.display="none";
             } else {
-                image.style.display="block";
+                image.style.display="";
             }
         });
     }
-    
-    
 </script>

@@ -88,7 +88,7 @@ $obj_images = $DBAccess->getImagesByUser($username);
             <form action="index.php?page=profileAction" method="POST" id="deleteProfileForm">
                 <input type="hidden" id="profileId" name="id" value="<?php echo $userId ?>">
                 <input type="hidden" id="profileAction" name="action" value="delete">
-                <nav><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationBox">Delete account</a>&nbsp;<i>Note: All of your uploaded images will also be deleted</i></nav>
+                <nav><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationBox">Delete account</a>&nbsp;<i class="align-middle">Note: All of your uploaded images will also be deleted</i></nav>
             </form>
         </div>
     </div>
