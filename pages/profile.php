@@ -63,7 +63,7 @@ $obj_images = $DBAccess->getImagesByUser($username);
                 for ($i = 0;$i < count($obj_images);$i++) {
                     ?>
                     <div class="col">
-                    <div class="card h-100 text-center" style="width: 12rem;">
+                    <div class="card text-center" style="width: 12rem;">
                         <a href="index.php?page=viewimage&id=<?php echo $obj_images[$i]->id ?>">
                         <img src="<?php echo $obj_images[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_images[$i]->name ?>">
                         </a>
