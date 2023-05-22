@@ -13,12 +13,12 @@ Simple self hosted image gallery, allowing users to create an account and share 
 ## Installation
 #1 - Either place the project folder or clone the repository into your server folder (ex: for apache, the default path is "/var/www/html/"
 
-#2 - <b>Important!</b> Change the "uploads/" folder owner and permissions to your web server proccess owner, otherwide the files uploaded won't be able to be moved to this location <br>
+#2 - <b>Important!</b> Change the "uploads/" folder owner and permissions to your web server proccess owner, otherwide the files uploaded won't be able to be moved to this location. <br>
 Explanation/Further instructions can be found in this answered thread: https://stackoverflow.com/questions/8103860/move-uploaded-file-gives-failed-to-open-stream-permission-denied-error <br><br>
-Example for Apache: <br>
+Example for Apache service on Ubuntu: <br>
 `imagegallery# chown www-data uploads/` <br>
 `imagegallery# chmod 755 uploads/` <br><br>
-It should look like this <br>
+It should look something like this <br>
 ![image](https://github.com/odavidsons/imagegallery/assets/122760540/d76a2ea3-7ee8-4969-aab5-8525db991681)
 
 #3 - Connect to postgres <br><br>
