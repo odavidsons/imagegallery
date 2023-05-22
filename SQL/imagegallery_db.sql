@@ -35,6 +35,40 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: categories; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.categories (
+    id integer NOT NULL,
+    name text
+);
+
+
+ALTER TABLE public.categories OWNER TO postgres;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.categories_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_id_seq OWNER TO postgres;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
+
+
+--
 -- Name: images; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -44,7 +78,8 @@ CREATE TABLE public.images (
     path text,
     uploaded_by text,
     upload_date text DEFAULT CURRENT_TIMESTAMP(0),
-    description text
+    description text,
+    category text
 );
 
 
@@ -182,6 +217,13 @@ ALTER SEQUENCE public.userstats_id_seq OWNED BY public.userstats.id;
 
 
 --
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+
+
+--
 -- Name: images id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -210,10 +252,18 @@ ALTER TABLE ONLY public.userstats ALTER COLUMN id SET DEFAULT nextval('public.us
 
 
 --
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.categories (id, name) FROM stdin;
+\.
+
+
+--
 -- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.images (id, name, path, uploaded_by, upload_date, description) FROM stdin;
+COPY public.images (id, name, path, uploaded_by, upload_date, description, category) FROM stdin;
 \.
 
 
@@ -242,10 +292,17 @@ COPY public.userstats (id, total_uploaded, active_uploaded, userid) FROM stdin;
 
 
 --
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
+
+
+--
 -- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.images_id_seq', 49, true);
+SELECT pg_catalog.setval('public.images_id_seq', 57, true);
 
 
 --
@@ -259,14 +316,22 @@ SELECT pg_catalog.setval('public.sessions_id_seq', 1, false);
 -- Name: userinfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userinfo_id_seq', 28, true);
+SELECT pg_catalog.setval('public.userinfo_id_seq', 29, true);
 
 
 --
 -- Name: userstats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userstats_id_seq', 14, true);
+SELECT pg_catalog.setval('public.userstats_id_seq', 15, true);
+
+
+--
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
 
 
 --
