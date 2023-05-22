@@ -68,6 +68,9 @@ session_start();
             case 'profile':
                 include('pages/profile.php');
                 break;
+            case 'adminPanel':
+                include('pages/admin.php');
+                break;
             //PHP actions
             case 'imageAction':
                 include('include/image_action.php');

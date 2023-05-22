@@ -32,12 +32,7 @@ $obj_images = $DBAccess->getImages();
         
         <?php
         //Alert messages
-        if (isset($_GET['accountdelete']) && $_GET['accountdelete'] == "success") {
-            echo "<div class='alert alert-success alert-dismissible fade show' role='alert' id='uploadAlert'>
-            Account deleted successfully!
-            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>";
-        }
+        
         ?>
 
         <!-- Image List -->
@@ -60,7 +55,7 @@ $obj_images = $DBAccess->getImages();
                     <?php
                 }
             } else {
-                echo "There are no images uplaoded to the website";
+                echo "There are no images uploaded to the website";
             }
             ?>
             </div>
