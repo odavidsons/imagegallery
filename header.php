@@ -16,6 +16,11 @@
 				<ul class="nav">
                 <?php
                 if (isset($_SESSION['username'])) {
+					if ($_SESSION['usertype'] == '1') {
+						echo "<li class='nav-item'>
+						<a class='nav-link text-light' href='index.php?page=adminPanel'>Admin Panel</a>
+						</li>";
+					}
                     ?>
 					<li class="nav-item">
 						<a class="nav-link text-light" href="index.php?page=profile">Profile</a>

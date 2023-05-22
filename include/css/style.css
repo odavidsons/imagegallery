@@ -29,12 +29,13 @@ html {
     }
     .header .nav-item:hover {
         background-color: rgb(73, 84, 92);
+        border-radius: 10px;
     }
     .header .dropdown-center a:active {
         background-color: rgb(192, 213, 236);
     }
     .content {
-        height: calc(100vh - 50px);
+        height: 100vh;
         width: 100vw;
     }
     .footer {
@@ -42,29 +43,35 @@ html {
         bottom: 0;
         width: 100%;
         height: 50px;
-        position: fixed;
+        position: relative;
         background-color: rgb(50, 57, 61);
         color: white;
     }
     .footer a {
         color: inherit;
     }
+/* Home Page */
+    .home_content {
+        width: 100%;
+        height: 100vh;
+    }
 /* Search page */
     .search_content {
         width: 100%;
+        height: 100vh;
     }
     .search_sidenav {
         background-color: rgb(65, 103, 146);
         width: 15%;
-        height: calc(100vh - 50px);
+        height: 100vh;
     }
     .search_sidenav #search_name{
         margin: 0 auto;
-        width: 90%;
+        width: 80%;
     }
     .search_sidenav #search_slider {
         margin: 0 auto;
-        width: 90%;
+        width: 80%;
     }
     .sidenav_item {
         width: 100%;
@@ -164,6 +171,26 @@ html {
         padding: 50px;
         width: 40%;
         margin: 0 auto;
+    }
+/* Admin Panel Page */
+    .admin_content {
+        width: 100%;
+        height: 100vh;
+    }
+    .admin_content #admin-tab {
+        margin: 0 auto;
+        width: 80%;
+    }
+    .admin_content #admin-tab .nav-link {
+        background-color: rgb(82, 127, 179);
+        color: white;
+    }
+    .admin_content #admin-tab .nav-link:hover {
+        background-color: rgb(101, 152, 209);
+    }
+    .admin_content #admin-tabContent {
+        margin: 0 auto;
+        width: 80%;
     }
 .formError {
     display: none;
