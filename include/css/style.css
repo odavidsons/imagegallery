@@ -49,22 +49,30 @@ html {
     .footer a {
         color: inherit;
     }
-/* Home/Search page */
-    .home_content {
+/* Search page */
+    .search_content {
         width: 100%;
     }
-    .home_sidenav {
+    .search_sidenav {
         background-color: rgb(65, 103, 146);
         width: 15%;
         height: calc(100vh - 50px);
     }
+    .search_sidenav #search_name{
+        margin: 0 auto;
+        width: 90%;
+    }
+    .search_sidenav #search_slider {
+        margin: 0 auto;
+        width: 90%;
+    }
     .sidenav_item {
         width: 100%;
-        height: 50px;
-        margin-top: 10px;
+        min-height: 50px;
+        margin: 15px 0 15px 0;
         text-align: center;
         color: white;
-        font-size: 19px;
+        font-size: 18px;
     }
     .sidenav_item:hover {
         background-color: rgb(82, 127, 179);
@@ -74,11 +82,14 @@ html {
         width: 100%;
         height: 100%;
     }
-    .home_images {
+    .search_images {
         width: 95%;
         margin: 0 auto;
     }
-    .home_images .card a:hover {
+    .search_images .card img {
+        max-height: 300px;
+    }
+    .search_images .card a:hover {
         filter: blur(1px);
     }
 /* ViewImage Page */
