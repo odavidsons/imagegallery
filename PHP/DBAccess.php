@@ -11,7 +11,11 @@ class DBAccess {
         }
     }
 
-    //Parse query result to an object
+    /* 
+    Parse a query result into an object
+    <result
+    >object 
+    */
     function parseResult($result) {
         $num_rows = pg_num_rows($result);
         unset($vect);
@@ -21,7 +25,10 @@ class DBAccess {
         return $vect;
     }
 
-    //Get all upoaded images in database
+    /* 
+    Get all images uploaded in the database
+    >object 
+    */
     function getImages() {
         $query = "SELECT * FROM images";
         $result = pg_query($this->conn, $query);
@@ -33,6 +40,11 @@ class DBAccess {
         return ($this->parseResult($result));
     }
 
+    /* 
+    Get the data of an image by it's ID
+    <integer id
+    >object 
+    */
     function getImageById($id) {
         $query = "SELECT * FROM images WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
@@ -44,6 +56,11 @@ class DBAccess {
         return ($this->parseResult($result));
     }
 
+    /* 
+    Get all the images uploaded by a given user
+    <string username
+    >object 
+    */
     function getImagesByUser($username) {
         $query = "SELECT * FROM images WHERE uploaded_by = '".$username."'";
         $result = pg_query($this->conn, $query);
@@ -55,6 +72,14 @@ class DBAccess {
         return ($this->parseResult($result));
     }
 
+    /* 
+    Insert a new image
+    <string name
+    <string path
+    <string description
+    <string author
+    >integer imgId
+    */
     function insertImage($name,$path,$description,$author) {
         $query = "INSERT INTO images (name,path,description,uploaded_by) VALUES ('".$name."','".$path."','".$description."','".$author."')";
         $result = pg_query($this->conn, $query);
@@ -69,6 +94,13 @@ class DBAccess {
         return ($imgId);
     }
 
+    /* 
+    Update an existing image
+    <integer id
+    <string name
+    <string description
+    >boolean
+    */
     function updateImage($id,$name,$description) {
         $query = "UPDATE images SET name = '".$name."',description = '".$description."' WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
@@ -80,6 +112,11 @@ class DBAccess {
         return true;
     }
 
+    /* 
+    Delete an image by it's ID
+    <integer id
+    >boolean
+    */
     function deleteImage($id) {
         //Get the image path and delete the file from the website
         $query = "SELECT path FROM images WHERE id ='".$id."'";

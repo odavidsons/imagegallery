@@ -20,7 +20,9 @@ if (isset($username) && isset($password)) {
       } else {
           session_start();
           $_SESSION['username'] = $username;
-          $_SESSION['usertype'] = "0";
+          //Verify if the user is a normal login or an administrator
+          $userType = $DBUsers->getUserType($username);
+          $_SESSION['usertype'] = $userType;
           header('index.php?page=home&login=success');
           ?>
           <script type="text/javascript">

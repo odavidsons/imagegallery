@@ -11,9 +11,10 @@ class DBUsers{
         }
     }
 
-    /*Parse a query result into an object
-    @param result
-    @returns object
+    /* 
+    Parse a query result into an object
+    <result
+    >object 
     */
     function parseResult($result) {
         $num_rows = pg_num_rows($result);
@@ -29,6 +30,11 @@ class DBUsers{
         return $vect;
     }
 
+    /* 
+    Get the ID of a user by it's username
+    <string username
+    >integer result row
+    */
     function getUserId($username) {
         $query = "SELECT id FROM userinfo WHERE username = '".$username."'";
         $result = pg_query($this->conn, $query);
@@ -42,6 +48,11 @@ class DBUsers{
         return ($id);
     }
 
+    /* 
+    Get all data from a user by it's ID
+    <integer id
+    >object 
+    */
     function getUserById($id) {
         $query = "SELECT * FROM userinfo WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
@@ -53,6 +64,11 @@ class DBUsers{
         return ($this->parseResult($result));
     }
 
+    /* 
+    Get the stats of a given user by it's ID
+    <integer id
+    >object 
+    */
     function getStatsByUserId($id) {
         $query = "SELECT * FROM userstats WHERE userid = '".$id."'";
         $result = pg_query($this->conn, $query);
@@ -64,6 +80,31 @@ class DBUsers{
         return ($this->parseResult($result));
     }
 
+
+    /* 
+    Get the type of a given user by it's username
+    <string username
+    >integer result row
+    */
+    function getUserType($username) {
+        $query = "SELECT type FROM userinfo WHERE username = '".$username."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getUserType()";
+            exit;
+        }
+        $row = pg_fetch_row($result, 0);
+        $type = $row[0];
+        return ($type);
+    }
+
+    /* 
+    Insert a new user
+    <string username
+    <string password
+    >integer userId
+    */
     function insertUser($username,$password) {
         $query = "INSERT INTO userinfo (username,password) VALUES ('".$username."','".password_hash($password,PASSWORD_BCRYPT)."')";
         $result = pg_query($this->conn, $query);
@@ -85,6 +126,11 @@ class DBUsers{
         return $userId;
     }
 
+    /* 
+    Insert default stats for a new user
+    <integer id
+    >integer statsId
+    */
     function insertUserStats($userId) {
         $query = "INSERT INTO userstats (userid) VALUES ('".$userId."')";
         $result = pg_query($this->conn, $query);
@@ -99,6 +145,13 @@ class DBUsers{
         return $statsId;
     }
 
+    /* 
+    Update the stats of a user by it's ID
+    <integer id
+    <integer total
+    <integer active
+    >boolean
+    */
     function updateUSerStats($userId,$total,$active) {
         $query = "UPDATE userstats SET total_uploaded = '".$total."',active_uploaded = '".$active."' WHERE userid = '".$userId."'";
         $result = pg_query($this->conn, $query);
@@ -110,6 +163,11 @@ class DBUsers{
         return true;
     }
 
+    /* 
+    Delete a user
+    <integer id
+    >boolean
+    */
     function deleteUser($userId) {
         $query = "DELETE FROM userinfo WHERE id = '".$userId."'";
         $result = pg_query($this->conn, $query);
