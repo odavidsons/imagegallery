@@ -1,6 +1,7 @@
 <?php 
 $name = $_POST['name'];
 $description = $_POST['description'];
+$category = $_POST['category'];
 $error = "";
 if (isset($_SESSION['username'])) {
     $uploadedBy = $_SESSION['username'];
@@ -52,7 +53,7 @@ if (isset($_SESSION['username'])) {
     if ($image_selected == true && $uploadOk == 1) {
         move_uploaded_file($_FILES["imageFile"]["tmp_name"], $target_file);
         //Insert image entry into database table
-        $imageId = $DBAccess->insertImage($name,$imageSitePath,$description,$uploadedBy);
+        $imageId = $DBAccess->insertImage($name,$imageSitePath,$description,$uploadedBy,$category);
         $obj_userstats = $DBUsers->getStatsByUserId($userId);
         if (isset($obj_userstats)) {
             //Update the current user's stats

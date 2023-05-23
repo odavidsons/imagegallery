@@ -84,6 +84,9 @@ session_start();
             case 'signupAction':
                 include('include/register_user.php');
                 break;
+            case 'adminAction':
+                include('include/admin_action.php');
+                break;
             case 'logout':
                 include('include/logout.php');
                 break;

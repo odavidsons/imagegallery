@@ -45,6 +45,7 @@ $obj_images = $DBAccess->getImagesByUser($username);
     }
     ?>
     
+    <!-- Display user stats -->
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Welcome <?php echo $_SESSION['username'] ?></h5>
@@ -61,14 +62,22 @@ $obj_images = $DBAccess->getImagesByUser($username);
             if (isset($obj_images) && count($obj_images) > 0) {
                 echo "<div class='row row-cols-1 row-cols-md-auto g-4'>";
                 for ($i = 0;$i < count($obj_images);$i++) {
+                    //Set the current image's caregory, based on if it's empty or not
+                    if ($obj_image[$i]->category == '') {
+                        $img_category = "None";
+                    } else {
+                        $img_category = $obj_image[$i]->category;
+                    }
                     ?>
+                    <!-- Display user images -->
                     <div class="col">
                     <div class="card text-center" style="width: 12rem;">
                         <a href="index.php?page=viewimage&id=<?php echo $obj_images[$i]->id ?>">
                         <img src="<?php echo $obj_images[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_images[$i]->name ?>">
                         </a>
                         <div class="card-footer text-body-secondary">
-                            Name: <?php echo $obj_images[$i]->name ?>
+                            <?php echo $obj_images[$i]->name ?>
+                            <nav><?php echo $$img_category ?></nav>
                         </div>
                     </div>
                     </div>

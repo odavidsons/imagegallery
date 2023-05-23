@@ -72,16 +72,33 @@ class DBAccess {
         return ($this->parseResult($result));
     }
 
+
+    /* 
+    Get all the image categories in the database
+    >object 
+    */
+    function getCategories() {
+        $query = "SELECT * FROM categories";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getCategories()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
     /* 
     Insert a new image
     <string name
     <string path
     <string description
     <string author
+    <string category
     >integer imgId
     */
-    function insertImage($name,$path,$description,$author) {
-        $query = "INSERT INTO images (name,path,description,uploaded_by) VALUES ('".$name."','".$path."','".$description."','".$author."')";
+    function insertImage($name,$path,$description,$author,$category) {
+        $query = "INSERT INTO images (name,path,description,uploaded_by,category) VALUES ('".$name."','".$path."','".$description."','".$author."','".$category."')";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
@@ -94,15 +111,35 @@ class DBAccess {
         return ($imgId);
     }
 
+    /*
+    Insert a new image category
+    <string name
+    >integer id
+    */
+    function insertCategory($name) {
+        $query = "INSERT INTO categories (name) VALUES ('".$name."')";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertCategory()";
+            exit;
+        }
+        $result = pg_query($this->conn, "SELECT MAX(id) FROM categories");
+        $row = pg_fetch_row($result, 0);
+        $Id = $row[0];
+        return ($Id);
+    }
+
     /* 
     Update an existing image
     <integer id
     <string name
     <string description
+    <string category
     >boolean
     */
-    function updateImage($id,$name,$description) {
-        $query = "UPDATE images SET name = '".$name."',description = '".$description."' WHERE id = '".$id."'";
+    function updateImage($id,$name,$description,$category) {
+        $query = "UPDATE images SET name = '".$name."',description = '".$description."',category = '".$category."' WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
@@ -141,6 +178,22 @@ class DBAccess {
         if (!isset($result)) {
             echo pg_last_error($this->conn);
             echo "Error in function deleteImage()";
+            exit;
+        }
+        return true;
+    }
+
+    /*
+    Delete a category by it's ID
+    <integer id
+    >boolean
+    */
+    function deleteCategory($id) {
+        $query = "DELETE FROM categories WHERE id = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function deleteCategory()";
             exit;
         }
         return true;

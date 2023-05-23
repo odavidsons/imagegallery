@@ -2,12 +2,20 @@
 $img_id = "";
 $img_id = $_GET['id'];
 $obj_image = $DBAccess->getImageById($img_id);
+//Set the current image's caregory, based on if it's empty or not
+if ($obj_image[0]->category == '') {
+    $img_category = "None";
+} else {
+    $img_category = $obj_image[0]->category;
+}
 
 ?>
 <div class="viewimage_content">
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php?page=home">Home</a></li>
+        <li class="breadcrumb-item"><a href="index.php?page=search">Search</a></li>
+        <li class="breadcrumb-item"><?php echo $img_category ?></li>
         <li class="breadcrumb-item active" aria-current="page">View</li>
     </ol>
     </nav>
@@ -44,6 +52,15 @@ $obj_image = $DBAccess->getImageById($img_id);
                         echo "<input class='form-control' name='imgName' value='".$obj_image[0]->name."' id='imgName'></input>";
                         echo "<label for='imgDescription' class='form-label'>Description:</label>";
                         echo "<textarea class='form-control' name='imgDescription' id='imgDescription' rows='6'>".$obj_image[0]->description."</textarea>";
+                        echo "<label for='imgCategory' class='form-label'>Category:</label>";
+                        echo "<select class='form-select' name='imgCategory' id='upload_content_select'>
+                        <option selected value='".$img_category."'>".$img_category."</option>";
+                        echo "<option value=''>None</option>";
+                        $obj_categories = $DBAccess->getCategories();
+                        for ($i = 0; $i < count($obj_categories);$i++) {
+                            echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
+                        }
+                        echo "</select>";
                         echo "<input type='hidden' name='imgId' value='".$obj_image[0]->id."'></input>";
                         echo "<div id='formError' style='color:red;' class='form-text'>".$error."</div>";
                         echo "<button type⁼'submit' class='btn btn-dark'>Submit changes</button>";
@@ -52,10 +69,12 @@ $obj_image = $DBAccess->getImageById($img_id);
                         echo "<p style='color:red;'>Editing restricted. You are not the owner of this image.</p>";
                     }
                 } else {
+                    //If the user is not the owner of the image, only show the data
                     echo "<p class='card-text'><nav>Name: ".$obj_image[0]->name."</nav></p>";
                     echo "<p class='card-text'><nav>Description: ".$obj_image[0]->description."</nav></p>";
                     echo "<p class='card-text'><nav>Uploaded By: ".$obj_image[0]->uploaded_by."</nav></p>";
                     echo "<p class='card-text'><nav>Upload date: ".$obj_image[0]->upload_date."</nav></p>";
+                    echo "<p class='card-text'><nav>Category: ".$img_category."</nav></p>";
                 }
                 ?>
             </div>
