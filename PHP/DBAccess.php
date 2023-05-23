@@ -89,6 +89,53 @@ class DBAccess {
     }
 
     /* 
+    Get an image category by it's ID
+    <integer id
+    >object 
+    */
+    function getCategoryById($id) {
+        $query = "SELECT * FROM categories WHERE id = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getCategoryById()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
+    /*
+    Get all the existing logs of all types
+    >object
+    */
+    function getLogs() {
+        $query = "SELECT * FROM logs ORDER BY date DESC";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getLogs()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
+    /*
+    Get all the existing logs of a given type (ex: upload logs)
+    <string type
+    >object
+    */
+    function getLogsByType($type) {
+        $query = "SELECT * FROM logs WHERE type = '".$type."' ORDER BY date DESC";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getLogsByType()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
+    /* 
     Insert a new image
     <string name
     <string path
@@ -98,6 +145,9 @@ class DBAccess {
     >integer imgId
     */
     function insertImage($name,$path,$description,$author,$category) {
+        //Generate an image insertion log
+        $this->insertLog('insert_image','Name:'.$name.'Description:'.$description.'Path:'.$path.'Category:'.$category.'',$_SESSION['username']);
+
         $query = "INSERT INTO images (name,path,description,uploaded_by,category) VALUES ('".$name."','".$path."','".$description."','".$author."','".$category."')";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
@@ -117,6 +167,9 @@ class DBAccess {
     >integer id
     */
     function insertCategory($name) {
+        //Generate a category insertion log
+        $this->insertLog('insert_category','Name:'.$name.'',$_SESSION['username']);
+
         $query = "INSERT INTO categories (name) VALUES ('".$name."')";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
@@ -130,6 +183,27 @@ class DBAccess {
         return ($Id);
     }
 
+    /*
+    Insert a new operation log
+    <string type
+    <string name
+    <string username
+    >integer logId
+    */
+    function insertLog($type,$name,$username) {
+        $query = "INSERT INTO logs (type,name,username) VALUES ('".$type."','".$name."','".$username."')";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertLog()";
+            exit;
+        }
+        $result = pg_query($this->conn, "SELECT MAX(id) FROM logs");
+        $row = pg_fetch_row($result, 0);
+        $logId = $row[0];
+        return ($logId);
+    }
+
     /* 
     Update an existing image
     <integer id
@@ -139,6 +213,11 @@ class DBAccess {
     >boolean
     */
     function updateImage($id,$name,$description,$category) {
+        //Generate an image update log
+        $obj_old_img = $this->getImageById($id);
+        $this->insertLog('update_image','Old name:'.$obj_old_img[0]->name.' | New name:'.$name.' | Old description:'.$obj_old_img[0]->description.' | New description:'.$description.' | Old category:'.$obj_old_img[0]->category.' | New category:'.$category.' | Path:'.$obj_old_img[0]->path,$_SESSION['username']);
+
+        //Execute the update query
         $query = "UPDATE images SET name = '".$name."',description = '".$description."',category = '".$category."' WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
@@ -155,6 +234,10 @@ class DBAccess {
     >boolean
     */
     function deleteImage($id) {
+        //Generate an image deletion log
+        $obj_deleted_img = $this->getImageById($id);
+        $this->insertLog('delete_image',$obj_deleted_img[0]->path,$_SESSION['username']);
+
         //Get the image path and delete the file from the website
         $query = "SELECT path FROM images WHERE id ='".$id."'";
         $result = pg_query($this->conn, $query);
@@ -180,6 +263,7 @@ class DBAccess {
             echo "Error in function deleteImage()";
             exit;
         }
+
         return true;
     }
 
@@ -189,6 +273,10 @@ class DBAccess {
     >boolean
     */
     function deleteCategory($id) {
+         //Generate a category deletion log
+         $obj_old_category = $this->getCategoryById($id);
+         $this->insertLog('delete_category','Name:'.$obj_old_category[0]->name.'',$_SESSION['username']);
+
         $query = "DELETE FROM categories WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {

@@ -77,7 +77,7 @@ html {
         margin: 0 auto;
         width: 80%;
     }
-    .sidenav_item {
+    .search_sidenav .sidenav_item {
         width: 100%;
         min-height: 50px;
         margin: 15px 0 15px 0;
@@ -85,14 +85,14 @@ html {
         color: white;
         font-size: 18px;
     }
-    .sidenav_item:hover {
+    .search_sidenav .sidenav_item:hover {
         background-color: rgb(82, 127, 179);
     }
-    .sidenav_item nav {
+    .search_sidenav .sidenav_item nav {
         width: 100%;
         height: 100%;
     }
-    .sidenav_filter {
+    .search_sidenav .sidenav_filter {
         width: 100%;
         min-height: 50px;
         margin: 15px 0 15px 0;
@@ -206,6 +206,32 @@ html {
         margin: 0 auto;
     }
 /* Admin Panel Page */
+    .admin_sidenav {
+        background-color: rgb(65, 103, 146);
+        width: 15%;
+        height: 100vh;
+    }
+    .admin_sidenav .sidenav_item {
+        width: 100%;
+        min-height: 50px;
+        margin: 15px 0 15px 0;
+        text-align: center;
+        color: white;
+        font-size: 18px;
+    }
+    .admin_sidenav .sidenav_item a {
+        width: 100%;
+        height: 100%;
+        color: white;
+        text-decoration: none;
+    }
+    .admin_sidenav .sidenav_item:hover {
+        background-color: rgb(82, 127, 179);
+    }
+    .admin_sidenav .sidenav_item nav {
+        width: 100%;
+        height: 100%;
+    }
     .admin_content {
         width: 100%;
         height: 100vh;
@@ -213,6 +239,7 @@ html {
     .admin_content .card {
         margin: 0 auto;
         width: 80%;
+        max-height: 60vh;
     }
     .admin_content #admin-tab {
         margin: 0 auto;
@@ -229,14 +256,17 @@ html {
         padding: 20px;
         width: 100%;
     }
-    #admin_categories_table {
-        width: 100%;
+    .admin_content #admin_categories_table {
+        padding: 15px;
     }
     #admin_categories_buttons {
         width: 100%;
     }
     #admin_categories_buttons input {
         width: 40%;
+    }
+    .admin_content #logs_table {
+        padding: 15px;
     }
 .formError {
     display: none;

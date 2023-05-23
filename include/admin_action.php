@@ -1,7 +1,10 @@
 <?php
-$category_name = $_POST['category_name'];
-$category_id = $_POST['category_id'];
-
+if (isset($_POST['category_name']) && $_POST['category_name'] != '') {
+    $category_name = $_POST['category_name'];
+}
+if (isset($_POST['category_id']) && $_POST['category_id'] != '') {
+    $category_id = $_POST['category_id'];
+}
 $type = $_GET['type'];
 
 //Check what type of information is beeing changed by the 'type' parameter
@@ -13,13 +16,13 @@ switch($type) {
             if (isset($category_id)) {
                 ?>
                 <script type="text/javascript">
-                    location = "index.php?page=adminPanel&action=success"
+                    location = "index.php?page=adminPanel&section=filters&action=success"
                 </script>
                 <?php
             } else {
                 ?>
                 <script type="text/javascript">
-                    location = "index.php?page=adminPanel&action=failed"
+                    location = "index.php?page=adminPanel&section=filters&action=failed"
                 </script>
                 <?php
             }
@@ -30,13 +33,13 @@ switch($type) {
             if (isset($category_delete)) {
                 ?>
                 <script type="text/javascript">
-                    location = "index.php?page=adminPanel&action=success"
+                    location = "index.php?page=adminPanel&section=filters&action=success"
                 </script>
                 <?php
             } else {
                 ?>
                 <script type="text/javascript">
-                    location = "index.php?page=adminPanel&action=failed"
+                    location = "index.php?page=adminPanel&section=filters&action=failed"
                 </script>
                 <?php
             }
