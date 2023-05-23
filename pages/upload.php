@@ -1,13 +1,13 @@
 <?php
 if(isset($_GET['error'])) {
     $error = $_GET['error'];
-}
+} else { $error = '';}
 if(isset($_GET['upload'])) {
     $uploadStatus = $_GET['upload'];
-}
+} else { $uploadStatus = '';}
 if(isset($_GET['id'])) {
     $imageId = $_GET['id'];
-}
+} else { $imageId = '';}
 ?>
 <div class="upload_content">
     <nav aria-label="breadcrumb">
@@ -47,8 +47,10 @@ if(isset($_GET['id'])) {
                         <option selected value="">None</option>
                         <?php
                         $obj_categories = $DBAccess->getCategories();
-                        for ($i = 0; $i < count($obj_categories);$i++) {
-                            echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
+                        if (count($obj_categories) > 0) {
+                            for ($i = 0; $i < count($obj_categories);$i++) {
+                                echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
+                            }
                         }
                         ?>
                         
@@ -64,7 +66,7 @@ if(isset($_GET['id'])) {
                 </form>
             </div>
             <?php 
-            if (isset($imageId)) {
+            if (isset($imageId) && $imageId != '') {
                 $obj_image = $DBAccess->getImageById($imageId);
                 ?>
                 <div class="card-body" style="width:35%;">

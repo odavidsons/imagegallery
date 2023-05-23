@@ -7,25 +7,25 @@ $obj_images = $DBAccess->getImagesByUser($username);
 ?>
 <div class="profile_content">
     <!-- Action confirmation modal -->
-        <div class="modal" id="confirmationBox" tabindex="-1" aria-labelledby="confirmationBox" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <nav>Do you really wish to delete your profile?</nav>
-                    <br>
-                    <form action="index.php?page=profileAction" method="POST" id="deleteProfileForm">
-                    <input type="hidden" id="profileId" name="id" value="<?php echo $userId ?>">
-                    <input type="hidden" id="profileAction" name="action" value="delete">
-                    <button class="btn btn-success" type="button" id="btnNo" data-bs-dismiss="modal">No</button>
-                    <button class="btn btn-danger" type="submit" id="btnYes">Yes</button>
-                    </form>
-                </div>
+    <div class="modal" id="confirmationBox" tabindex="-1" aria-labelledby="confirmationBox" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <nav>Do you really wish to delete your profile?</nav>
+                <br>
+                <form action="index.php?page=profileAction" method="POST" id="deleteProfileForm">
+                <input type="hidden" id="profileId" name="id" value="<?php echo $userId ?>">
+                <input type="hidden" id="profileAction" name="action" value="delete">
+                <button class="btn btn-success" type="button" id="btnNo" data-bs-dismiss="modal">No</button>
+                <button class="btn btn-danger" type="submit" id="btnYes">Yes</button>
+                </form>
             </div>
         </div>
-        </div>
+    </div>
+    </div>
 
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">

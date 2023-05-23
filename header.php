@@ -29,7 +29,7 @@
 						<a class="nav-link text-light"><?php echo $_SESSION['username'] ?></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-light" href="index.php?page=logout"><span class='material-symbols-outlined'>logout</span> </a>
+						<a class="nav-link text-light" href="index.php?page=logout"><span class='material-symbols-outlined align-middle'>logout</span> </a>
 					</li>
                     <?php
                 } else {
