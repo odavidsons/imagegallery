@@ -6,17 +6,32 @@ $obj_images = $DBAccess->getImages();
     <!-- Sidenav -->
     <div class="search_sidenav">
         <div class="sidenav_item">
-            <button>Filters</button>
+            <nav>Filters&nbsp;<span class="material-symbols-outlined align-middle">filter_list</span></nav>
         </div>
-        <div class="sidenav_item">
+        <div class="sidenav_filter">
             <div id="search_name">
                 <input class="form-control" type="text" id="name_input" onkeyup="searchByName()" placeholder="Search image by name">
             </div>
         </div>
-        <div class="sidenav_item">
+        <div class="sidenav_filter">
             <div id="search_slider">
             <nav><label for="displayRange" class="form-label">Display ammount:&nbsp;</label><b id="displayRangeOutput"></b></nav>
                 <input type="range" class="form-range" min="0" max="50" step="1" id="displayRange">
+            </div>
+        </div>
+        <div class="sidenav_filter">
+            <div id="search_category">
+                
+                <label for="categorySelect" class="form-label">Category:</label>
+                <select onchange="getCategory()" class="form-select" name="categorySelect" id="categorySelect">
+                <option selected value="">None</option>
+                <?php
+                $obj_categories = $DBAccess->getCategories();
+                for ($i=0;$i < count($obj_categories);$i++) {
+                    echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
+                }
+                echo "</select>";
+                ?>
             </div>
         </div>
     </div>
@@ -32,7 +47,12 @@ $obj_images = $DBAccess->getImages();
         
         <?php
         //Alert messages
-        
+        if (isset($_GET['imagedelete']) && $_GET['imagedelete'] == "success") {
+            echo "<div class='alert alert-success alert-dismissible fade show' role='alert' id='uploadAlert'>
+            Your image was deleted successfully!
+            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+            </div>";
+        }
         ?>
 
         <!-- Image List -->
@@ -43,9 +63,12 @@ $obj_images = $DBAccess->getImages();
                 for ($i = 0;$i < count($obj_images);$i++) {
                     ?>
                     <div class="col">
-                    <div class="card text-center" style="width: 18rem;" data-count="<?php echo $i+1 ?>" data-name="<?php echo $obj_images[$i]->name ?>">
+                    <div class="card text-center" style="width: 18rem;" data-count="<?php echo $i+1 ?>" data-name="<?php echo $obj_images[$i]->name ?>" data-category="<?php echo $obj_images[$i]->category ?>">
                         <a href="index.php?page=viewimage&id=<?php echo $obj_images[$i]->id ?>">
                         <img src="<?php echo $obj_images[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_images[$i]->name ?>">
+                        <div class="card-img-overlay" id="img_view_button">
+                            
+                        </div>
                         </a>
                         <div class="card-footer text-body-secondary">
                             Name: <?php echo $obj_images[$i]->name ?>
@@ -65,12 +88,12 @@ $obj_images = $DBAccess->getImages();
 <script>
     //Get the image card elements and store in an array
     imageCards = document.getElementsByClassName("card");
-    const images = Array.from(imageCards);
+    var images = Array.from(imageCards);
 
+    //Filter by image name
     function searchByName() {
         //Get the search input
         var nameInput = document.getElementById("name_input").value.toLowerCase();
-            //Search only the images showed on the page, by using current the range slider value
             for (i = 0; i < slider.value; i++) {
                 //If the search value relates to the 'name' data value of the imageCard, keep it's style visible
                 if (imageCards[i].getAttribute('data-name').toLowerCase().indexOf(nameInput) > -1) {
@@ -79,8 +102,10 @@ $obj_images = $DBAccess->getImages();
                     imageCards[i].style.display="none";
                 }
             }
+            
     }
 
+    //Change display ammount
     //Show range slider value
     var slider = document.getElementById("displayRange");
     var output = document.getElementById("displayRangeOutput");
@@ -99,4 +124,24 @@ $obj_images = $DBAccess->getImages();
             }
         });
     }
+
+    //Filter by image category
+    //Get selected option
+    function getCategory() {
+        selectedCategory = document.getElementById("categorySelect").value;
+        images.forEach((image) => {
+            if (selectedCategory != '') {
+                //If an image has a differente category than the selected one, set it's display style to 'none'
+                if (image.getAttribute('data-category') != selectedCategory) {
+                    image.style.display="none";
+                } else {
+                    image.style.display=""; 
+                }
+            } else {
+                image.style.display="";
+            }
+        });
+    }
+
+    
 </script>
