@@ -43,6 +43,16 @@ if(isset($_GET['id'])) {
                     <label for="uploadDescription">Description:</label>
                     <textarea class="form-control" name="description" placeholder="Write something about your image" id="uploadDescription" rows="6"></textarea>
                     <div id="formError" style="color:red;" class="form-text"><?php echo $error ?></div>
+                    <select class="form-select" name="category" id="upload_content_select">
+                        <option selected value="">None</option>
+                        <?php
+                        $obj_categories = $DBAccess->getCategories();
+                        for ($i = 0; $i < count($obj_categories);$i++) {
+                            echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
+                        }
+                        ?>
+                        
+                    </select>
                     <?php
                         if (!isset($_SESSION['username'])) {
                             echo "<nav><button type='submit' class='btn btn-dark' disabled>Upload</button>&nbsp;<b>* Please login to be able to upload images.</b></nav>";

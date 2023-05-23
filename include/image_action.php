@@ -39,8 +39,9 @@ if ($action == 'delete') {
 if ($action == 'edit') {
     $name = $_POST['imgName'];
     $description = $_POST['imgDescription'];
+    $imgCategory = $_POST['imgCategory'];
     $imgId = $_POST['imgId'];
-    $update = $DBAccess->updateImage($imgId,$name,$description);
+    $update = $DBAccess->updateImage($imgId,$name,$description,$imgCategory);
     if ($update == true) {
         header('index.php?page=viewimage&id='.$imgId);
         ?>
