@@ -21,26 +21,48 @@ if ($obj_image[0]->category == '') {
     </nav>
 
     <div class="container-flex">
+        <!-- Action confirmation modal -->
+        <div class="modal" id="confirmationBox" tabindex="-1" aria-labelledby="confirmationBox" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <nav>Delete this image?</nav>
+                    <br>
+                    <form action="index.php?page=imageAction&id=<?php echo $img_id ?>&action=delete" method="POST" id="deleteProfileForm">
+                    <button class="btn btn-success" type="button" id="btnNo" data-bs-dismiss="modal">No</button>
+                    <button class="btn btn-danger" type="submit" id="btnYes">Yes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+
         <img src="<?php echo $obj_image[0]->path ?>" alt="image-<?php echo $obj_image[0]->name ?>">
 
         <div class="image_info">
             <div class="card">
             <div class="card-body">
                 <?php
+                echo "<div class='container-flex'>";
                 //If the user is not the uploader of the image, block the action buttons
                 if ($_SESSION['username'] == $obj_image[0]->uploaded_by) {
                     //Show options
                     echo "<a class='btn align-middle' id='btn-edit' href='index.php?page=viewimage&id=$img_id&action=edit'>Edit <span class='material-symbols-outlined align-middle'>border_color</span></a>";
-                    echo "<a class='btn align-middle' id='btn-delete' href='index.php?page=imageAction&id=$img_id&action=delete'>Delete <span class='material-symbols-outlined align-middle'>delete_forever</span></a>";
+                    echo "<button class='btn align-middle' id='btn-delete' data-bs-toggle='modal' data-bs-target='#confirmationBox'>Delete <span class='material-symbols-outlined align-middle'>delete_forever</span></button>";
+                    echo "<a class='btn align-middle' id='btn-edit' href='index.php?page=imageAction&id=$img_id&action=download'>Download <span class='material-symbols-outlined align-middle'>download</span></a>";
                     if (isset($_GET['action']) && ($_GET['action'] == 'edit')) {
                         //Go back button
-                        echo "<a class='btn align-middle' id='btn-edit' href='index.php?page=viewimage&id=$img_id'>Go back <span class='material-symbols-outlined align-middle'>undo</span></a>";
+                        echo "<a class='btn align-middle' style='margin-left: auto;' id='btn-edit' href='index.php?page=viewimage&id=$img_id'>Go back <span class='material-symbols-outlined align-middle'>undo</span></a>";
                     }
                 } else {
                     echo "<button disabled class='btn align-middle' id='btn-edit'>Edit <span class='material-symbols-outlined align-middle'>border_color</span></button>";
                     echo "<button disabled class='btn align-middle' id='btn-delete'>Delete <span class='material-symbols-outlined align-middle'>delete_forever</span></button>";
+                    echo "<a class='btn align-middle' id='btn-edit' href='index.php?page=imageAction&id=$img_id&action=download'>Download <span class='material-symbols-outlined align-middle'>download</span></a>";
                 }
-
+                echo "</div>";
                 //Image info area.
                 //Check if user is the one who uploaded the image
                 if (isset($_GET['action']) && ($_GET['action'] == 'edit')) {

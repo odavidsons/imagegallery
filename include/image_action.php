@@ -22,7 +22,7 @@ if ($action == 'delete') {
         header('index.php?page=home');
         ?>
         <script type="text/javascript">
-            location = "index.php?page=home"
+            location = "index.php?page=search&imagedelete=success"
         </script>
         <?php
     } else {
@@ -58,5 +58,20 @@ if ($action == 'edit') {
         </script>
         <?php
     }
+}
+//Download the selected image
+if ($action == 'download') {
+    $obj_img = $DBAccess->getImageById($id);
+    header('Content-Type: application/download');
+    header('Content-Disposition: attachment; filename="'.$obj_img[0]->path.'"');
+    header("Content-Length: " . filesize("".$obj_img[0]->path.""));
+    $fp = fopen("".$obj_img[0]->path."", "r");
+    fpassthru($fp);
+    fclose($fp);
+    ?>
+    <script type="text/javascript">
+        location = "index.php?page=viewimage&id=<?php echo $id ?>&error=<?php echo $error ?>"
+    </script>
+    <?php
 }
 ?>
