@@ -1,7 +1,11 @@
 <?php
 //If form is submitted, login to a user session
-$username = $_POST['username'];
-$password = $_POST['password'];
+if (isset($_POST['username'])) {
+  $username = $_POST['username'];
+}
+if (isset($_POST['password'])) {
+  $password = $_POST['password'];
+}
 $error = "";
 if (isset($username) && isset($password)) {
     //Get hashed password from database
