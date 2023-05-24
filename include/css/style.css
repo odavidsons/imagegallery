@@ -3,9 +3,19 @@ html {
     min-width: 100vw;
     min-height: 100vh;
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 .container-flex {
     display: flex;
+}
+.container-centered {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
 }
 /* Global Breadcrumbs */
     .breadcrumb {
@@ -39,11 +49,10 @@ html {
         width: 100vw;
     }
     .footer {
-        margin-top: 50px;
         bottom: 0;
         width: 100%;
         height: 50px;
-        position: relative;
+        position: fixed;
         background-color: rgb(50, 57, 61);
         color: white;
     }
@@ -52,8 +61,13 @@ html {
     }
 /* Home Page */
     .home_content {
-        width: 100%;
+        width: 100vw;
         height: 100vh;
+    }
+    .home_content #home_welcome_card {
+        height: 60%;
+        width: 50%;
+        border-color: rgb(82, 127, 179);
     }
 /* Search page */
     .search_content {
@@ -104,6 +118,9 @@ html {
         width: 95%;
         margin: 0 auto;
     }
+    .search_images .card .card-footer{
+        background-color: inherit;
+    }
     .search_images .card img {
         max-height: 300px;
     }
@@ -113,6 +130,9 @@ html {
     }
     .search_images .card a:hover {
         filter: blur(1px);
+    }
+    #search_image_stats nav {
+        margin: 0 auto;
     }
 /* ViewImage Page */
     .viewimage_content {
@@ -140,6 +160,25 @@ html {
     }
     .viewimage_content .image_info .card select {
         margin: 0 0 15px 0;
+    }
+    #viewimage_image_stats nav {
+        margin: 0 15px 0 0;
+    }
+    #viewimage_image_stats nav a {
+        text-decoration: none;
+        color: inherit;
+    }
+    #viewimage_image_stats #like_btn:hover {
+        scale: 1.1;
+        color: rgb(82, 127, 179);
+    }
+    #viewimage_image_stats #dislike_btn:hover {
+        scale: 1.1;
+        color: rgb(185, 34, 29);
+    }
+    #viewimage_image_stats #favourite_btn:hover {
+        scale: 1.1;
+        color: rgb(226, 206, 21);
     }
 /* ViewImage Page Buttons */
     #btn-edit {
@@ -171,13 +210,14 @@ html {
     .uploaded_images .card a:hover {
         filter: blur(1px);
     }
+    .uploaded_images .card #search_image_stats span {
+        margin: 0 auto;
+    }
     .profile_actions {
         margin: 20px 0 0 0;
     }
     #confirmationBox {
-
         display: none;
-
     }
 /* Upload Page */
     .upload_content {
@@ -267,6 +307,9 @@ html {
     }
     .admin_content #logs_table {
         padding: 15px;
+    }
+    .admin_content #logs_table table {
+        table-layout: fixed;
     }
 .formError {
     display: none;

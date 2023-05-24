@@ -1,4 +1,13 @@
 <?php
+//Block access to this page
+if (!isset($_SESSION['username']) || $_SESSION['type'] == 0) {
+    ?>
+    <script type="text/javascript">
+        location = "index.php?page=home&error=Access Restricted"
+    </script>
+    <?php
+}
+
 if (isset($_POST['category_name']) && $_POST['category_name'] != '') {
     $category_name = $_POST['category_name'];
 }

@@ -62,11 +62,13 @@ $obj_images = $DBAccess->getImagesByUser($username);
             if (isset($obj_images) && count($obj_images) > 0) {
                 echo "<div class='row row-cols-1 row-cols-md-auto g-4'>";
                 for ($i = 0;$i < count($obj_images);$i++) {
+                    //Get the current image's stats
+                    $obj_imagestats = $DBAccess->getImageStats($obj_images[$i]->id);
                     //Set the current image's caregory, based on if it's empty or not
-                    if ($obj_image[$i]->category == '') {
+                    if ($obj_images[$i]->category == '') {
                         $img_category = "None";
                     } else {
-                        $img_category = $obj_image[$i]->category;
+                        $img_category = $obj_images[$i]->category;
                     }
                     ?>
                     <!-- Display user images -->
@@ -77,7 +79,12 @@ $obj_images = $DBAccess->getImagesByUser($username);
                         </a>
                         <div class="card-footer text-body-secondary">
                             <?php echo $obj_images[$i]->name ?>
-                            <nav><?php echo $$img_category ?></nav>
+                            <nav><?php echo $img_category ?></nav>
+                            <div class="container-flex" id="search_image_stats">
+                                <span><span class="material-symbols-outlined align-middle">thumb_up</span>&nbsp;<?php echo $obj_imagestats[0]->likes ?></span>
+                                <span><span class="material-symbols-outlined align-middle">thumb_down</span>&nbsp;<?php echo $obj_imagestats[0]->dislikes ?></span>
+                                <span><span class="material-symbols-outlined align-middle">star</span>&nbsp;<?php echo $obj_imagestats[0]->favourites ?></span>
+                            </div>
                         </div>
                     </div>
                     </div>

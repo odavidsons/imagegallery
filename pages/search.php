@@ -61,6 +61,8 @@ $obj_images = $DBAccess->getImages();
             <?php
             if (count($obj_images) > 0) {
                 for ($i = 0;$i < count($obj_images);$i++) {
+                    //Get the current image's stats
+                    $obj_imagestats = $DBAccess->getImageStats($obj_images[$i]->id);
                     ?>
                     <div class="col">
                     <div class="card text-center" style="width: 18rem;" data-count="<?php echo $i+1 ?>" data-name="<?php echo $obj_images[$i]->name ?>" data-category="<?php echo $obj_images[$i]->category ?>">
@@ -72,6 +74,11 @@ $obj_images = $DBAccess->getImages();
                         </a>
                         <div class="card-footer text-body-secondary">
                             Name: <?php echo $obj_images[$i]->name ?>
+                            <div class="container-flex" id="search_image_stats">
+                                <nav><span class="material-symbols-outlined align-middle">thumb_up</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->likes ?></span></nav>
+                                <nav><span class="material-symbols-outlined align-middle">thumb_down</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->dislikes ?></span></nav>
+                                <nav><span class="material-symbols-outlined align-middle">star</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->favourites ?></span></nav>
+                            </div>
                         </div>
                     </div>
                     </div>

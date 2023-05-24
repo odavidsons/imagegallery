@@ -98,9 +98,38 @@ if ($obj_image[0]->category == '') {
                     echo "<p class='card-text'><nav>Upload date: ".$obj_image[0]->upload_date."</nav></p>";
                     echo "<p class='card-text'><nav>Category: ".$img_category."</nav></p>";
                 }
+                if (isset($_SESSION['username']) && $_SESSION['username'] != '') {
+                    //Get the stats of the image to display
+                    $obj_imagestats = $DBAccess->getImageStats($obj_image[0]->id);
+                    //Get the vote of the current user
+                    $obj_userimagevote = $DBAccess->getUserImageVote($obj_image[0]->id);
+                    if (isset($obj_userimagevote)) {
+                        $uservote = $obj_userimagevote[0]->type;
+                    }
+                    ?>
+                    <div class='container-flex' id="viewimage_image_stats">
+                        <nav><a href="index.php?page=imageAction&action=imagevote&type=like&id=<?php echo $img_id ?>" id="like_btn" class="material-symbols-outlined align-middle">thumb_up</a>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->likes ?></span></nav>
+                        <nav><a href="index.php?page=imageAction&action=imagevote&type=dislike&id=<?php echo $img_id ?>" id="dislike_btn" class="material-symbols-outlined align-middle">thumb_down</a>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->dislikes ?></span></nav>
+                        <nav><a href="index.php?page=imageAction&action=imagefavourite&id=<?php echo $img_id ?>" id="favourite_btn" class="material-symbols-outlined align-middle">star</a>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->favourites ?></span></nav>
+                    </div>
+                    <?php
+                }
                 ?>
             </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    window.onload = function checkImageVote() {
+        var current_vote = "<?php echo $uservote; ?>";
+        if (current_vote == "like") {
+            like_btn = document.getElementById("like_btn");
+            like_btn.style.color = "rgb(82, 127, 179)";
+        }
+        if (current_vote == "dislike") {
+            like_btn = document.getElementById("dislike_btn");
+            like_btn.style.color = "rgb(185, 34, 29)";
+        }
+    }
+</script>
