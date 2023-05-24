@@ -29,7 +29,15 @@ $obj_images = $DBAccess->getImages();
 
         <!-- Homepage Content -->
         <div class="home_content">
-        <h1>Homepage</h1>
+            <div class="container-centered">
+                <div class="card text-center" id="home_welcome_card">
+                    <div class="card-body">
+                        <h5 class="card-title">Welcome</h5>
+                        <br>
+                        <p class="card-text">This is your personal image gallery. Feel free to make changes for it to fit your likings</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

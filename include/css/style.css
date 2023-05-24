@@ -3,9 +3,19 @@ html {
     min-width: 100vw;
     min-height: 100vh;
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 .container-flex {
     display: flex;
+}
+.container-centered {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
 }
 /* Global Breadcrumbs */
     .breadcrumb {
@@ -39,7 +49,6 @@ html {
         width: 100vw;
     }
     .footer {
-        margin-top: 50px;
         bottom: 0;
         width: 100%;
         height: 50px;
@@ -52,8 +61,13 @@ html {
     }
 /* Home Page */
     .home_content {
-        width: 100%;
+        width: 100vw;
         height: 100vh;
+    }
+    .home_content #home_welcome_card {
+        height: 60%;
+        width: 50%;
+        border-color: rgb(82, 127, 179);
     }
 /* Search page */
     .search_content {
@@ -103,6 +117,9 @@ html {
     .search_images {
         width: 95%;
         margin: 0 auto;
+    }
+    .search_images .card .card-footer{
+        background-color: inherit;
     }
     .search_images .card img {
         max-height: 300px;
@@ -267,6 +284,9 @@ html {
     }
     .admin_content #logs_table {
         padding: 15px;
+    }
+    .admin_content #logs_table table {
+        table-layout: fixed;
     }
 .formError {
     display: none;
