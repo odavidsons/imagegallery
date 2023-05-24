@@ -108,6 +108,43 @@ ALTER SEQUENCE public.images_id_seq OWNED BY public.images.id;
 
 
 --
+-- Name: imagestats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.imagestats (
+    id integer NOT NULL,
+    imageid integer NOT NULL,
+    likes integer DEFAULT 0,
+    dislikes integer DEFAULT 0,
+    favourites integer DEFAULT 0
+);
+
+
+ALTER TABLE public.imagestats OWNER TO postgres;
+
+--
+-- Name: imagestats_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.imagestats_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.imagestats_id_seq OWNER TO postgres;
+
+--
+-- Name: imagestats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.imagestats_id_seq OWNED BY public.imagestats.id;
+
+
+--
 -- Name: logs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -179,6 +216,20 @@ ALTER TABLE public.sessions_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
+
+--
+-- Name: userimagevotes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.userimagevotes (
+    userid integer NOT NULL,
+    imageid integer NOT NULL,
+    date text DEFAULT CURRENT_TIMESTAMP(0),
+    type text
+);
+
+
+ALTER TABLE public.userimagevotes OWNER TO postgres;
 
 --
 -- Name: userinfo; Type: TABLE; Schema: public; Owner: postgres
@@ -268,6 +319,13 @@ ALTER TABLE ONLY public.images ALTER COLUMN id SET DEFAULT nextval('public.image
 
 
 --
+-- Name: imagestats id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.imagestats ALTER COLUMN id SET DEFAULT nextval('public.imagestats_id_seq'::regclass);
+
+
+--
 -- Name: logs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -312,6 +370,14 @@ ALTER TABLE ONLY public.images
 
 
 --
+-- Name: imagestats imagestats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.imagestats
+    ADD CONSTRAINT imagestats_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: logs logs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -341,6 +407,22 @@ ALTER TABLE ONLY public.userinfo
 
 ALTER TABLE ONLY public.userstats
     ADD CONSTRAINT userstats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: userimagevotes fk_imageid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.userimagevotes
+    ADD CONSTRAINT fk_imageid FOREIGN KEY (imageid) REFERENCES public.images(id) ON DELETE CASCADE;
+
+
+--
+-- Name: userimagevotes fk_userid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.userimagevotes
+    ADD CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES public.userinfo(id) ON DELETE CASCADE;
 
 
 --

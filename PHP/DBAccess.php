@@ -72,6 +72,21 @@ class DBAccess {
         return ($this->parseResult($result));
     }
 
+    /*
+    Get the stats of an image by it's ID
+    <integer id
+    >object
+    */
+    function getImageStats($imgId) {
+        $query = "SELECT * FROM imagestats WHERE imageid = '".$imgId."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getImageStats()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
 
     /* 
     Get all the image categories in the database
@@ -135,6 +150,22 @@ class DBAccess {
         return ($this->parseResult($result));
     }
 
+    /*
+    Get a user vote on an image by the image ID
+    <integer imgId
+    >object
+    */
+    function getUserImageVote($imgId) {
+        $query = "SELECT * FROM userimagevotes WHERE imageid = '".$imgId."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getUserImageVote()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
     /* 
     Insert a new image
     <string name
@@ -158,6 +189,15 @@ class DBAccess {
         $result = pg_query($this->conn, "SELECT MAX(id) FROM images");
         $row = pg_fetch_row($result, 0);
         $imgId = $row[0];
+
+        //Insert new entry for image stats in DB
+        $imgstatsid = $this->insertImageStats($imgId);
+        if (!isset($imgstatsid)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertImage()";
+            exit;
+        }
+
         return ($imgId);
     }
 
@@ -181,6 +221,108 @@ class DBAccess {
         $row = pg_fetch_row($result, 0);
         $Id = $row[0];
         return ($Id);
+    }
+
+    /*
+    Insert a new entry for image stats, pointing it to an image id
+    <integer imgId
+    >integer imgstatsId
+    */
+    function insertImageStats($imgId) {
+        $query = "INSERT INTO imagestats (imageid) VALUES ('".$imgId."')";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertImageStats()";
+            exit;
+        }
+        $result = pg_query($this->conn, "SELECT MAX(id) FROM images");
+        $row = pg_fetch_row($result, 0);
+        $imgstatsId = $row[0];
+        return $imgstatsId;
+    }
+
+    /*
+    Insert a user vote on an image (like, dislike,favourite)
+    <string username
+    <integer imageid
+    >integer voteId
+    */
+    function insertUserImageVote($username,$imageId,$type) {
+        //Get the user's ID
+        $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$username."'");
+        $row = pg_fetch_row($result, 0);
+        $userId = $row[0];
+
+        $query = "INSERT INTO userimagevotes (userid,imageid,type) VALUES ('".$userId."','".$imageId."','".$type."')";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertUserImageVote()";
+            exit;
+        }
+        return true;
+    }
+
+    /*
+    Add an image vote by it's ID and type (like, dislike, favourite)
+    <integer imgId
+    <string type
+    >boolean
+    */
+    function addImageVote($imgId,$type) {
+        //Get the data of the previous vote on this image by this user
+        $previousVote = $this->getUserImageVote($imgId);
+        //Get the current stats of the image
+        $obj_imagestats = $this->getImageStats($imgId);
+        switch ($type) {
+            case 'like':
+                //Check if user has already voted on this image
+                if (isset($previousVote) && $previousVote[0]->type == 'dislike') {
+                    //Remove the dislike and add a like to the image stats. Update the user vote entry
+                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes + 1),($obj_imagestats[0]->dislikes - 1),$obj_imagestats[0]->favourites);
+                    $updateVote = $this->updateUserImageVote($imgId,'like');
+                    $returnMessage = "Vote changed!";
+                } elseif (isset($previousVote) && $previousVote[0]->type == 'like') {
+                    //If there already is a like, remove it
+                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes - 1),$obj_imagestats[0]->dislikes,$obj_imagestats[0]->favourites);
+                    $updateVote = $this->deleteUserImageVote($imgId);
+                    $returnMessage = "Like removed!";
+                } elseif (!isset($previousVote)) {
+                    //Add a like to the image stats and a new user vote entry
+                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes + 1),($obj_imagestats[0]->dislikes),$obj_imagestats[0]->favourites);
+                    $addUserVote = $this->insertUserImageVote($_SESSION['username'],$imgId,'like');
+                    $returnMessage = "Image liked!";
+                }
+                break;
+            case 'dislike':
+                //Check if user has already voted on this image
+                if (isset($previousVote) && $previousVote[0]->type == 'like') {
+                    //Remove the like and add a dislike to the image stats. Update the user vote entry
+                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes - 1),($obj_imagestats[0]->dislikes + 1),$obj_imagestats[0]->favourites);
+                    $updateVote = $this->updateUserImageVote($imgId,'dislike');
+                    $returnMessage = "Vote changed!";
+                } elseif (isset($previousVote) && $previousVote[0]->type == 'dislike') {
+                    //If there already is a dislike, remove it
+                    $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,($obj_imagestats[0]->dislikes - 1),$obj_imagestats[0]->favourites);
+                    $updateVote = $this->deleteUserImageVote($imgId);
+                    $returnMessage = "Dislike removed!";
+                } elseif (!isset($previousVote)) {
+                    //Add a like to the image stats and a new user vote entry
+                    $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,($obj_imagestats[0]->dislikes + 1),$obj_imagestats[0]->favourites);
+                    $addUserVote = $this->insertUserImageVote($_SESSION['username'],$imgId,'dislike');
+                    $returnMessage = "Image disliked!";
+                }
+                break;
+            default:
+                break;
+        }
+        if (!isset($returnMessage)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function addImageVote()";
+            exit;
+        }
+        return $returnMessage;
     }
 
     /*
@@ -228,6 +370,44 @@ class DBAccess {
         return true;
     }
 
+    /*
+    Update the stats of an image
+    <integer id
+    <integer likes
+    <integer dislikes
+    <integer favourites
+    >boolean
+    */
+    function updateImageStats($id,$likes,$dislikes,$favourites) {
+        $query = "UPDATE imagestats SET likes = '".$likes."',dislikes = '".$dislikes."',favourites = '".$favourites."' WHERE imageid = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function updateImageStats()";
+            exit;
+        }
+        return true;
+    }
+
+    /*
+    Update a user vote on an image by the image ID
+    <ingeger imgId
+    <string type
+    >boolean
+    */
+    function updateUserImageVote($imgId,$type) {
+        //Generate a vote update log
+
+        $query = "UPDATE userimagevotes SET type = '".$type."' WHERE imageid = '".$imgId."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function updateUserImageVote()";
+            exit;
+        }
+        return true;
+    }
+
     /* 
     Delete an image by it's ID
     <integer id
@@ -264,6 +444,34 @@ class DBAccess {
             exit;
         }
 
+        //Delete imagestats entry from DB
+        $query = "DELETE FROM imagestats WHERE imageid = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function deleteImage()";
+            exit;
+        }
+
+        return true;
+    }
+
+    /*
+    Delete a user vote on an image by the image ID
+    <integer imgId
+    >boolean
+    */
+    function deleteUserImageVote($imgId) {
+        //Generate a vote deletion log
+
+
+        $query = "DELETE FROM userimagevotes WHERE imageid = '".$imgId."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function deleteUserImageVote()";
+            exit;
+        }
         return true;
     }
 

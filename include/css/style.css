@@ -52,7 +52,7 @@ html {
         bottom: 0;
         width: 100%;
         height: 50px;
-        position: relative;
+        position: fixed;
         background-color: rgb(50, 57, 61);
         color: white;
     }
@@ -131,6 +131,9 @@ html {
     .search_images .card a:hover {
         filter: blur(1px);
     }
+    #search_image_stats nav {
+        margin: 0 auto;
+    }
 /* ViewImage Page */
     .viewimage_content {
         margin: 0 auto;
@@ -157,6 +160,25 @@ html {
     }
     .viewimage_content .image_info .card select {
         margin: 0 0 15px 0;
+    }
+    #viewimage_image_stats nav {
+        margin: 0 15px 0 0;
+    }
+    #viewimage_image_stats nav a {
+        text-decoration: none;
+        color: inherit;
+    }
+    #viewimage_image_stats #like_btn:hover {
+        scale: 1.1;
+        color: rgb(82, 127, 179);
+    }
+    #viewimage_image_stats #dislike_btn:hover {
+        scale: 1.1;
+        color: rgb(185, 34, 29);
+    }
+    #viewimage_image_stats #favourite_btn:hover {
+        scale: 1.1;
+        color: rgb(226, 206, 21);
     }
 /* ViewImage Page Buttons */
     #btn-edit {
@@ -188,13 +210,14 @@ html {
     .uploaded_images .card a:hover {
         filter: blur(1px);
     }
+    .uploaded_images .card #search_image_stats span {
+        margin: 0 auto;
+    }
     .profile_actions {
         margin: 20px 0 0 0;
     }
     #confirmationBox {
-
         display: none;
-
     }
 /* Upload Page */
     .upload_content {
