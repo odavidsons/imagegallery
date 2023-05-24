@@ -2,7 +2,15 @@
 $userId = $_POST['id'];
 $action = $_POST['action'];
 $error = "";
-$username = $_SESSION['username'];
+if (isset($_SESSION['username'])) {
+    $username = $_SESSION['username'];
+} else {
+    ?>
+    <script type="text/javascript">
+        location = "index.php?page=home&error=Access Restricted"
+    </script>
+    <?php
+}
 
 //Delete user
 if ($action == 'delete') {
