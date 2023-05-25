@@ -7,7 +7,11 @@ if (!isset($_SESSION['usertype']) || $_SESSION['usertype'] != '1') {
     </script>
     <?php
 }
-$section = $_GET['section'];
+if (isset($_GET['section'])) {
+    $section = $_GET['section'];
+} else {
+    $section = "";
+}
 ?>
 
 <div class="container-flex">

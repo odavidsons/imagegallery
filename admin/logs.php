@@ -28,14 +28,18 @@ $obj_Logs = $DBAccess->getLogs();
             </thead>
             <tbody>
                 <?php
-                for ($i=0;$i < count($obj_Logs);$i++) {
-                    echo "<tr>";
-                    echo "<td>".($i+1)."</td>";
-                    echo "<td>".$obj_Logs[$i]->type."</td>";
-                    echo "<td>".$obj_Logs[$i]->name."</td>";
-                    echo "<td>".$obj_Logs[$i]->username."</td>";
-                    echo "<td>".$obj_Logs[$i]->date."</td>";
-                    echo "</tr>";
+                if (isset($obj_Logs)) {
+                    for ($i=0;$i < count((array)$obj_Logs);$i++) {
+                        echo "<tr>";
+                        echo "<td>".($i+1)."</td>";
+                        echo "<td>".$obj_Logs[$i]->type."</td>";
+                        echo "<td>".$obj_Logs[$i]->name."</td>";
+                        echo "<td>".$obj_Logs[$i]->username."</td>";
+                        echo "<td>".$obj_Logs[$i]->date."</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "There are no logs";
                 }
                 ?>
             </tbody>

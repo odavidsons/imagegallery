@@ -27,7 +27,7 @@ $obj_images = $DBAccess->getImages();
                 <option selected value="">None</option>
                 <?php
                 $obj_categories = $DBAccess->getCategories();
-                for ($i=0;$i < count($obj_categories);$i++) {
+                for ($i=0;$i < count((array)$obj_categories);$i++) {
                     echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
                 }
                 echo "</select>";
@@ -59,8 +59,8 @@ $obj_images = $DBAccess->getImages();
         <div class="search_images">
             <div class="row row-cols-1 row-cols-md-auto g-3">
             <?php
-            if (count($obj_images) > 0) {
-                for ($i = 0;$i < count($obj_images);$i++) {
+            if (count((array)$obj_images) > 0) {
+                for ($i = 0;$i < count((array)$obj_images);$i++) {
                     //Get the current image's stats
                     $obj_imagestats = $DBAccess->getImageStats($obj_images[$i]->id);
                     ?>

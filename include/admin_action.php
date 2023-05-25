@@ -1,6 +1,6 @@
 <?php
 //Block access to this page
-if (!isset($_SESSION['username']) || $_SESSION['type'] == 0) {
+if (!isset($_SESSION['username']) || $_SESSION['type'] == '0') {
     ?>
     <script type="text/javascript">
         location = "index.php?page=home&error=Access Restricted"

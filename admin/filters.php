@@ -28,8 +28,8 @@ $obj_categories = $DBAccess->getCategories();
                             </thead>
                             <tbody>
                                 <?php
-                                if (count($obj_categories) > 0) {
-                                    for ($i = 0;$i < count($obj_categories);$i++) {
+                                if (count((array)$obj_categories) > 0) {
+                                    for ($i = 0;$i < count((array)$obj_categories);$i++) {
                                         echo "<tr>";
                                         echo "<td style='width:70%;'>".$obj_categories[$i]->name."</td>";
                                         echo "<td class='text-center'><input class='form-check-input' type='checkbox' name='category_id' value='".$obj_categories[$i]->id."' id='admin_categories_chkbox'></td>";
