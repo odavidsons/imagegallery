@@ -47,8 +47,8 @@ if(isset($_GET['id'])) {
                         <option selected value="">None</option>
                         <?php
                         $obj_categories = $DBAccess->getCategories();
-                        if (count($obj_categories) > 0) {
-                            for ($i = 0; $i < count($obj_categories);$i++) {
+                        if (count((array)$obj_categories) > 0) {
+                            for ($i = 0; $i < count((array)$obj_categories);$i++) {
                                 echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
                             }
                         }

@@ -1,4 +1,9 @@
 <?php
+if (isset($_GET['error'])) {
+    $error = $_GET['error'];
+} else {
+    $error = "";
+}
 $img_id = "";
 $img_id = $_GET['id'];
 $obj_image = $DBAccess->getImageById($img_id);
@@ -79,7 +84,7 @@ if ($obj_image[0]->category == '') {
                         <option selected value='".$img_category."'>".$img_category."</option>";
                         echo "<option value=''>None</option>";
                         $obj_categories = $DBAccess->getCategories();
-                        for ($i = 0; $i < count($obj_categories);$i++) {
+                        for ($i = 0; $i < count((array)$obj_categories);$i++) {
                             echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
                         }
                         echo "</select>";
@@ -105,14 +110,26 @@ if ($obj_image[0]->category == '') {
                     $obj_userimagevote = $DBAccess->getUserImageVote($obj_image[0]->id);
                     if (isset($obj_userimagevote)) {
                         $uservote = $obj_userimagevote[0]->type;
+                    }  else {
+                        $uservote = "";
+                    }
+                    //Get image favourite vote by the user
+                    $obj_userimagevote = $DBAccess->getUserImageFavourite($obj_image[0]->id);
+                    if (isset($obj_userimagevote)) {
+                        $userfavourite = 1;
+                    }  else {
+                        $userfavourite = 0;
                     }
                     ?>
                     <div class='container-flex' id="viewimage_image_stats">
                         <nav><a href="index.php?page=imageAction&action=imagevote&type=like&id=<?php echo $img_id ?>" id="like_btn" class="material-symbols-outlined align-middle">thumb_up</a>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->likes ?></span></nav>
                         <nav><a href="index.php?page=imageAction&action=imagevote&type=dislike&id=<?php echo $img_id ?>" id="dislike_btn" class="material-symbols-outlined align-middle">thumb_down</a>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->dislikes ?></span></nav>
-                        <nav><a href="index.php?page=imageAction&action=imagefavourite&id=<?php echo $img_id ?>" id="favourite_btn" class="material-symbols-outlined align-middle">star</a>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->favourites ?></span></nav>
+                        <nav><a href="index.php?page=imageAction&action=imagevote&type=favourite&id=<?php echo $img_id ?>" id="favourite_btn" class="material-symbols-outlined align-middle">star</a>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->favourites ?></span></nav>
                     </div>
                     <?php
+                    if (isset($_GET['message']) && $_GET['message'] != '') {
+                        echo "<i>".$_GET['message']."</i>";
+                    }
                 }
                 ?>
             </div>
@@ -121,15 +138,24 @@ if ($obj_image[0]->category == '') {
     </div>
 </div>
 <script>
-    window.onload = function checkImageVote() {
+    window.onload = checkImageFavourite(),checkImageVote();
+    function checkImageVote() {
         var current_vote = "<?php echo $uservote; ?>";
         if (current_vote == "like") {
             like_btn = document.getElementById("like_btn");
             like_btn.style.color = "rgb(82, 127, 179)";
         }
         if (current_vote == "dislike") {
-            like_btn = document.getElementById("dislike_btn");
-            like_btn.style.color = "rgb(185, 34, 29)";
+            dislike_btn = document.getElementById("dislike_btn");
+            dislike_btn.style.color = "rgb(185, 34, 29)";
+        }
+    }
+
+    function checkImageFavourite() {
+        var current_favourite = "<?php echo $userfavourite; ?>";
+        if (current_favourite == 1) {
+            favourite_btn = document.getElementById("favourite_btn");
+            favourite_btn.style.color = "rgb(226, 206, 21)";
         }
     }
 </script>
