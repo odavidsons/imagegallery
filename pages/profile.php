@@ -1,9 +1,17 @@
 <?php
+if (!isset($_SESSION['username'])) {
+    ?>
+    <script type="text/javascript">
+        location = "index.php?page=home&error=Please register an account to access your profile"
+    </script>
+    <?php
+}
+
 $username = $_SESSION['username'];
 $userId = $DBUsers->getUserId($username);
 $obj_userstats = $DBUsers->getStatsByUserId($userId);
 $obj_images = $DBAccess->getImagesByUser($username);
-
+$obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY IN THIS FUNCTION 25-05-23
 ?>
 <div class="profile_content">
     <!-- Action confirmation modal -->
@@ -59,9 +67,9 @@ $obj_images = $DBAccess->getImagesByUser($username);
         <div class="card-body">
             <h5 class="card-title">Your images</h5>
             <?php
-            if (isset($obj_images) && count($obj_images) > 0) {
+            if (isset($obj_images) && count((array)$obj_images) > 0) {
                 echo "<div class='row row-cols-1 row-cols-md-auto g-4'>";
-                for ($i = 0;$i < count($obj_images);$i++) {
+                for ($i = 0;$i < count((array)$obj_images);$i++) {
                     //Get the current image's stats
                     $obj_imagestats = $DBAccess->getImageStats($obj_images[$i]->id);
                     //Set the current image's caregory, based on if it's empty or not

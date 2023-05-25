@@ -1,7 +1,10 @@
 <?php
-$id = $_GET['id'];
-$action = $_GET['action'];
-
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+}
+if (isset($_GET['action'])) {
+    $action = $_GET['action'];
+}
 if (isset($_SESSION['username'])) {
     $uploadedBy = $_SESSION['username'];
 } else {
@@ -90,6 +93,9 @@ switch ($action) {
                     break;
                 case 'dislike':
                     $message = $DBAccess->addImageVote($id,'dislike');
+                    break;
+                case 'favourite':
+                    $message = $DBAccess->addImageFavourite($id);
                     break;
             }
             ?>

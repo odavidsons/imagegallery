@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+-- Dumped from database version 14.8 (Ubuntu 14.8-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.8 (Ubuntu 14.8-0ubuntu0.22.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -216,6 +216,19 @@ ALTER TABLE public.sessions_id_seq OWNER TO postgres;
 
 ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
+
+--
+-- Name: userimagefavourites; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.userimagefavourites (
+    userid integer NOT NULL,
+    imageid integer NOT NULL,
+    date text DEFAULT CURRENT_TIMESTAMP(0)
+);
+
+
+ALTER TABLE public.userimagefavourites OWNER TO postgres;
 
 --
 -- Name: userimagevotes; Type: TABLE; Schema: public; Owner: postgres

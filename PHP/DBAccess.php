@@ -151,12 +151,59 @@ class DBAccess {
     }
 
     /*
+    Get the favourited images of an user by their username
+    <string username
+    >object
+    */
+    function getUserFavouriteImages($username) {
+        //Get the user's ID
+        $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
+        $row = pg_fetch_row($result, 0);
+        $userId = $row[0];
+
+        $query = "SELECT * FROM images WHERE uploaded_by = '".$username."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getUserFavouriteImages()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
+    /*
     Get a user vote on an image by the image ID
     <integer imgId
     >object
     */
     function getUserImageVote($imgId) {
-        $query = "SELECT * FROM userimagevotes WHERE imageid = '".$imgId."'";
+        //Get the user's ID
+        $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
+        $row = pg_fetch_row($result, 0);
+        $userId = $row[0];
+
+        $query = "SELECT * FROM userimagevotes WHERE userid = '".$userId."' AND imageid = '".$imgId."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getUserImageVote()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
+    /*
+    Get a user image favourite vote by the image ID
+    <integer imgId
+    >object
+    */
+    function getUserImageFavourite($imgId) {
+        //Get the user's ID
+        $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
+        $row = pg_fetch_row($result, 0);
+        $userId = $row[0];
+
+        $query = "SELECT * FROM userimagefavourites WHERE userid = '".$userId."' AND imageid = '".$imgId."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
@@ -265,7 +312,29 @@ class DBAccess {
     }
 
     /*
-    Add an image vote by it's ID and type (like, dislike, favourite)
+    Insert an image favourite vote by a user
+    <string username
+    <integer imageId
+    >boolean
+    */
+    function insertUserImageFavourite($username,$imageId) {
+        //Get the user's ID
+        $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$username."'");
+        $row = pg_fetch_row($result, 0);
+        $userId = $row[0];
+
+        $query = "INSERT INTO userimagefavourites (userid,imageid) VALUES ('".$userId."','".$imageId."')";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertUserImageFavourite()";
+            exit;
+        }
+        return true;
+    }
+
+    /*
+    Add/Remove or switch an image vote by it's ID and type (like, dislike, favourite)
     <integer imgId
     <string type
     >boolean
@@ -294,7 +363,7 @@ class DBAccess {
                     $addUserVote = $this->insertUserImageVote($_SESSION['username'],$imgId,'like');
                     $returnMessage = "Image liked!";
                 }
-                break;
+            break;
             case 'dislike':
                 //Check if user has already voted on this image
                 if (isset($previousVote) && $previousVote[0]->type == 'like') {
@@ -313,13 +382,40 @@ class DBAccess {
                     $addUserVote = $this->insertUserImageVote($_SESSION['username'],$imgId,'dislike');
                     $returnMessage = "Image disliked!";
                 }
-                break;
+            break;
             default:
-                break;
+            break;
         }
         if (!isset($returnMessage)) {
             echo pg_last_error($this->conn);
             echo "Error in function addImageVote()";
+            exit;
+        }
+        return $returnMessage;
+    }
+
+    /*
+    Add/remove an image favourite by an user
+    */
+    function addImageFavourite($imgId) {
+        //Check if the user has already favourited this image
+        $previousFavourite = $this->getUserImageFavourite($imgId);
+        //Get the current stats of the image
+        $obj_imagestats = $this->getImageStats($imgId);
+        if (isset($previousFavourite)) {
+            //Remove the image favourite
+            $imageFavourite = $this->deleteUserImageFavourite($_SESSION['username'],$imgId);
+            $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,$obj_imagestats[0]->dislikes,($obj_imagestats[0]->favourites - 1));
+            $returnMessage = "Removed from favourites!";
+        } else {
+            //Add the image favourite
+            $imageFavourite = $this->insertUserImageFavourite($_SESSION['username'],$imgId);
+            $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,$obj_imagestats[0]->dislikes,($obj_imagestats[0]->favourites + 1));
+            $returnMessage = "Added to favourites!";
+        }
+        if (!isset($returnMessage)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function addImageFavourite()";
             exit;
         }
         return $returnMessage;
@@ -398,7 +494,12 @@ class DBAccess {
     function updateUserImageVote($imgId,$type) {
         //Generate a vote update log
 
-        $query = "UPDATE userimagevotes SET type = '".$type."' WHERE imageid = '".$imgId."'";
+        //Get the user's ID
+        $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
+        $row = pg_fetch_row($result, 0);
+        $userId = $row[0];
+
+        $query = "UPDATE userimagevotes SET type = '".$type."' WHERE userid = '".$userId."' AND imageid = '".$imgId."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
@@ -464,12 +565,37 @@ class DBAccess {
     function deleteUserImageVote($imgId) {
         //Generate a vote deletion log
 
+        //Get the user's ID
+        $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
+        $row = pg_fetch_row($result, 0);
+        $userId = $row[0];
 
-        $query = "DELETE FROM userimagevotes WHERE imageid = '".$imgId."'";
+        $query = "DELETE FROM userimagevotes WHERE userid = '".$userId."' AND imageid = '".$imgId."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
             echo "Error in function deleteUserImageVote()";
+            exit;
+        }
+        return true;
+    }
+
+    /*
+    Remove a user image favourite vote by the image ID
+    */
+    function deleteUserImageFavourite($username,$imgId) {
+        //Generate a vote deletion log
+
+        //Get the user's ID
+        $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
+        $row = pg_fetch_row($result, 0);
+        $userId = $row[0];
+
+        $query = "DELETE FROM userimagefavourites WHERE userid = '".$userId."' AND imageid = '".$imgId."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function deleteUserImageFavourite()";
             exit;
         }
         return true;

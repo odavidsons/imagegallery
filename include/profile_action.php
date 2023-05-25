@@ -17,8 +17,8 @@ if ($action == 'delete') {
     $delete_user = $DBUsers->deleteUser($userId);
     $obj_images = $DBAccess->getImagesByUser($username);
     //Delete all the images uploaded by the user
-    if (isset($obj_images) && (count($obj_images) > 0)) {
-        for ($i = 0;$i < count($obj_images);$i++) {
+    if (isset($obj_images) && (count((array)$obj_images) > 0)) {
+        for ($i = 0;$i < count((array)$obj_images);$i++) {
             $delete_image = $DBAccess->deleteImage($obj_images[$i]->id);
         }
     }
