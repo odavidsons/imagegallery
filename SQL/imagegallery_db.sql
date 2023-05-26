@@ -69,6 +69,44 @@ ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
 
 
 --
+-- Name: imagecomments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.imagecomments (
+    id integer NOT NULL,
+    userid integer NOT NULL,
+    imageid integer NOT NULL,
+    text text,
+    username text,
+    date text DEFAULT CURRENT_TIMESTAMP(0)
+);
+
+
+ALTER TABLE public.imagecomments OWNER TO postgres;
+
+--
+-- Name: imagecomments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.imagecomments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.imagecomments_id_seq OWNER TO postgres;
+
+--
+-- Name: imagecomments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.imagecomments_id_seq OWNED BY public.imagecomments.id;
+
+
+--
 -- Name: images; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -116,7 +154,8 @@ CREATE TABLE public.imagestats (
     imageid integer NOT NULL,
     likes integer DEFAULT 0,
     dislikes integer DEFAULT 0,
-    favourites integer DEFAULT 0
+    favourites integer DEFAULT 0,
+    comments integer DEFAULT 0
 );
 
 
@@ -289,7 +328,8 @@ CREATE TABLE public.userstats (
     id integer NOT NULL,
     total_uploaded integer DEFAULT 0,
     active_uploaded integer DEFAULT 0,
-    userid integer NOT NULL
+    userid integer NOT NULL,
+    total_comments integer DEFAULT 0
 );
 
 
@@ -322,6 +362,13 @@ ALTER SEQUENCE public.userstats_id_seq OWNED BY public.userstats.id;
 --
 
 ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+
+
+--
+-- Name: imagecomments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.imagecomments ALTER COLUMN id SET DEFAULT nextval('public.imagecomments_id_seq'::regclass);
 
 
 --
@@ -372,6 +419,14 @@ ALTER TABLE ONLY public.userstats ALTER COLUMN id SET DEFAULT nextval('public.us
 
 ALTER TABLE ONLY public.categories
     ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: imagecomments imagecomments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.imagecomments
+    ADD CONSTRAINT imagecomments_pkey PRIMARY KEY (id);
 
 
 --
@@ -427,6 +482,30 @@ ALTER TABLE ONLY public.userstats
 --
 
 ALTER TABLE ONLY public.userimagevotes
+    ADD CONSTRAINT fk_imageid FOREIGN KEY (imageid) REFERENCES public.images(id) ON DELETE CASCADE;
+
+
+--
+-- Name: imagecomments fk_imageid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.imagecomments
+    ADD CONSTRAINT fk_imageid FOREIGN KEY (imageid) REFERENCES public.images(id) ON DELETE CASCADE;
+
+
+--
+-- Name: userimagefavourites fk_imageid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.userimagefavourites
+    ADD CONSTRAINT fk_imageid FOREIGN KEY (imageid) REFERENCES public.images(id) ON DELETE CASCADE;
+
+
+--
+-- Name: imagestats fk_imageid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.imagestats
     ADD CONSTRAINT fk_imageid FOREIGN KEY (imageid) REFERENCES public.images(id) ON DELETE CASCADE;
 
 
