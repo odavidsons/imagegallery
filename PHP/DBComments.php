@@ -121,6 +121,11 @@ class DBComments {
         }
         //Generate comment insertition log
         $this->insertLog('post_comment','Image: '.$imgId.' | Comment: '.$text.'',$_SESSION['username']);
+
+        //Update the image stats
+        $DBAccess = new DBAccess($this->conn);
+        $obj_imagestats = $DBAccess->getImageStats($imgId);
+        $updatestats = $DBAccess->updateImageStats($imgId,$obj_imagestats[0]->likes,$obj_imagestats[0]->dislikes,$obj_imagestats[0]->favourites,($obj_imagestats[0]->comments + 1));
         return true;
     }
 
@@ -142,6 +147,11 @@ class DBComments {
         }
         //Generate comment insertition log
         $this->insertLog('delete_comment','Image id: '.$obj_old_comment[0]->imageid.' | Comment: '.$obj_old_comment[0]->text.'',$_SESSION['username']);
+
+        //Update the image stats
+        $DBAccess = new DBAccess($this->conn);
+        $obj_imagestats = $DBAccess->getImageStats($obj_old_comment[0]->imageid);
+        $updatestats = $DBAccess->updateImageStats($obj_old_comment[0]->imageid,$obj_imagestats[0]->likes,$obj_imagestats[0]->dislikes,$obj_imagestats[0]->favourites,($obj_imagestats[0]->comments - 1));
         return true;
     }
 }

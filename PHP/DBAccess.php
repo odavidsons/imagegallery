@@ -353,17 +353,17 @@ class DBAccess {
                 //Check if user has already voted on this image
                 if (count($previousVote)>0 && $previousVote[0]->type == 'dislike') {
                     //Remove the dislike and add a like to the image stats. Update the user vote entry
-                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes + 1),($obj_imagestats[0]->dislikes - 1),$obj_imagestats[0]->favourites);
+                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes + 1),($obj_imagestats[0]->dislikes - 1),$obj_imagestats[0]->favourites,$obj_imagestats[0]->comments);
                     $updateVote = $this->updateUserImageVote($imgId,'like');
                     $returnMessage = "Vote changed!";
                 } elseif (count($previousVote)>0 && $previousVote[0]->type == 'like') {
                     //If there already is a like, remove it
-                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes - 1),$obj_imagestats[0]->dislikes,$obj_imagestats[0]->favourites);
+                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes - 1),$obj_imagestats[0]->dislikes,$obj_imagestats[0]->favourites,$obj_imagestats[0]->comments);
                     $updateVote = $this->deleteUserImageVote($imgId);
                     $returnMessage = "Like removed!";
                 } elseif (count($previousVote)==0) {
                     //Add a like to the image stats and a new user vote entry
-                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes + 1),($obj_imagestats[0]->dislikes),$obj_imagestats[0]->favourites);
+                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes + 1),($obj_imagestats[0]->dislikes),$obj_imagestats[0]->favourites,$obj_imagestats[0]->comments);
                     $addUserVote = $this->insertUserImageVote($_SESSION['username'],$imgId,'like');
                     $returnMessage = "Image liked!";
                 }
@@ -372,17 +372,17 @@ class DBAccess {
                 //Check if user has already voted on this image
                 if (count($previousVote)>0 && $previousVote[0]->type == 'like') {
                     //Remove the like and add a dislike to the image stats. Update the user vote entry
-                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes - 1),($obj_imagestats[0]->dislikes + 1),$obj_imagestats[0]->favourites);
+                    $imageVote = $this->updateImageStats($imgId,($obj_imagestats[0]->likes - 1),($obj_imagestats[0]->dislikes + 1),$obj_imagestats[0]->favourites,$obj_imagestats[0]->comments);
                     $updateVote = $this->updateUserImageVote($imgId,'dislike');
                     $returnMessage = "Vote changed!";
                 } elseif (count($previousVote)>0 && $previousVote[0]->type == 'dislike') {
                     //If there already is a dislike, remove it
-                    $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,($obj_imagestats[0]->dislikes - 1),$obj_imagestats[0]->favourites);
+                    $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,($obj_imagestats[0]->dislikes - 1),$obj_imagestats[0]->favourites,$obj_imagestats[0]->comments);
                     $updateVote = $this->deleteUserImageVote($imgId);
                     $returnMessage = "Dislike removed!";
                 } elseif (count($previousVote)==0) {
                     //Add a like to the image stats and a new user vote entry
-                    $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,($obj_imagestats[0]->dislikes + 1),$obj_imagestats[0]->favourites);
+                    $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,($obj_imagestats[0]->dislikes + 1),$obj_imagestats[0]->favourites,$obj_imagestats[0]->comments);
                     $addUserVote = $this->insertUserImageVote($_SESSION['username'],$imgId,'dislike');
                     $returnMessage = "Image disliked!";
                 }
@@ -409,12 +409,12 @@ class DBAccess {
         if (count($previousFavourite)>0) {
             //Remove the image favourite
             $imageFavourite = $this->deleteUserImageFavourite($_SESSION['username'],$imgId);
-            $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,$obj_imagestats[0]->dislikes,($obj_imagestats[0]->favourites - 1));
+            $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,$obj_imagestats[0]->dislikes,($obj_imagestats[0]->favourites - 1),$obj_imagestats[0]->comments);
             $returnMessage = "Removed from favourites!";
         } else {
             //Add the image favourite
             $imageFavourite = $this->insertUserImageFavourite($_SESSION['username'],$imgId);
-            $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,$obj_imagestats[0]->dislikes,($obj_imagestats[0]->favourites + 1));
+            $imageVote = $this->updateImageStats($imgId,$obj_imagestats[0]->likes,$obj_imagestats[0]->dislikes,($obj_imagestats[0]->favourites + 1),$obj_imagestats[0]->comments);
             $returnMessage = "Added to favourites!";
         }
         if (!isset($returnMessage)) {
@@ -478,8 +478,8 @@ class DBAccess {
     <integer favourites
     >boolean
     */
-    function updateImageStats($id,$likes,$dislikes,$favourites) {
-        $query = "UPDATE imagestats SET likes = '".$likes."',dislikes = '".$dislikes."',favourites = '".$favourites."' WHERE imageid = '".$id."'";
+    function updateImageStats($id,$likes,$dislikes,$favourites,$comments) {
+        $query = "UPDATE imagestats SET likes = '".$likes."',dislikes = '".$dislikes."',favourites = '".$favourites."',comments = '".$comments."' WHERE imageid = '".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);

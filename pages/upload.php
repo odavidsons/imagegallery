@@ -57,7 +57,7 @@ if(isset($_GET['id'])) {
                     </select>
                     <?php
                         if (!isset($_SESSION['username'])) {
-                            echo "<nav><button type='submit' class='btn btn-dark' disabled>Upload</button>&nbsp;<b>* Please login to be able to upload images.</b></nav>";
+                            echo "<nav><button type='submit' class='btn btn-dark' disabled>Upload</button>&nbsp;<b class='text-danger align-middle'>* Please login to be able to upload images.</b></nav>";
                         } else {
                             echo "<button type='submit' class='btn btn-dark'>Upload</button>";
                         }

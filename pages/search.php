@@ -82,6 +82,7 @@ if (isset($_GET['category']) && $_GET['category'] != '') {
                                 <nav><span class="material-symbols-outlined align-middle">thumb_up</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->likes ?></span></nav>
                                 <nav><span class="material-symbols-outlined align-middle">thumb_down</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->dislikes ?></span></nav>
                                 <nav><span class="material-symbols-outlined align-middle">star</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->favourites ?></span></nav>
+                                <nav><span class="material-symbols-outlined align-middle">comment</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->comments ?></span></nav>
                             </div>
                         </div>
                     </div>

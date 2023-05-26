@@ -202,9 +202,18 @@ html {
         border-radius: 15px;
     }
     .viewimage_content .image_comment_section .card .image_comment .comment_delete_btn {
-        color: inherit;
-        position: absolute;
-        right: 0;
+        float: right;
+    }
+    .viewimage_content .image_comment_section .card .image_comment .comment_delete_btn a {
+        color: black;
+        text-decoration: none;
+    }
+    .viewimage_content .image_comment_section .card .image_comment .comment_delete_btn a:hover {
+        color: rgb(61, 61, 61);
+    }
+    .viewimage_content .image_comment_section .card .image_comment .comment_delete_btn ul {
+        padding: 10px;
+        min-width: 100%;
     }
     .viewimage_content .image_comment_section .card .image_comment_user {
         margin-top: 15px;
