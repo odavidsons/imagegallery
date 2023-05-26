@@ -30,6 +30,22 @@ class DBComments {
     }
 
     /*
+    Get the data of an image content by it's entry ID
+    <integer id
+    >object
+    */
+    function getImageCommentById($id) {
+        $query = "SELECT * FROM imagecomments WHERE id = '".$id."'";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function getImageCommentById()";
+            exit;
+        }
+        return ($this->parseResult($result));
+    }
+
+    /*
     Get all the comments of an image by it's ID
     <integer imgId
     >object
@@ -62,6 +78,27 @@ class DBComments {
         return ($this->parseResult($result));
     }
 
+     /*
+    Insert a new operation log
+    <string type
+    <string name
+    <string username
+    >integer logId
+    */
+    function insertLog($type,$name,$username) {
+        $query = "INSERT INTO logs (type,name,username) VALUES ('".$type."','".$name."','".$username."')";
+        $result = pg_query($this->conn, $query);
+        if (!isset($result)) {
+            echo pg_last_error($this->conn);
+            echo "Error in function insertLog()";
+            exit;
+        }
+        $result = pg_query($this->conn, "SELECT MAX(id) FROM logs");
+        $row = pg_fetch_row($result, 0);
+        $logId = $row[0];
+        return ($logId);
+    }
+
     /*
     Insert a comment by the user in the selected image by it's ID
     <integer imgId
@@ -82,6 +119,8 @@ class DBComments {
             echo "Error in function getImageComment()";
             exit;
         }
+        //Generate comment insertition log
+        $this->insertLog('post_comment','Image: '.$imgId.' | Comment: '.$text.'',$_SESSION['username']);
         return true;
     }
 
@@ -91,6 +130,9 @@ class DBComments {
     >boolean
     */
     function deleteImageComment($id) {
+        //Get the comment data
+        $obj_old_comment = $this->getImageCommentById($id);
+
         $query = "DELETE FROM imagecomments WHERE id = '".$id."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
@@ -98,6 +140,8 @@ class DBComments {
             echo "Error in function deleteImageComment()";
             exit;
         }
+        //Generate comment insertition log
+        $this->insertLog('delete_comment','Image id: '.$obj_old_comment[0]->imageid.' | Comment: '.$obj_old_comment[0]->text.'',$_SESSION['username']);
         return true;
     }
 }
