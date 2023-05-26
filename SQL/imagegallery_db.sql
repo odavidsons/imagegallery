@@ -414,6 +414,146 @@ ALTER TABLE ONLY public.userstats ALTER COLUMN id SET DEFAULT nextval('public.us
 
 
 --
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.categories (id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: imagecomments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.imagecomments (id, userid, imageid, text, username, date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.images (id, name, path, uploaded_by, upload_date, description, category) FROM stdin;
+\.
+
+
+--
+-- Data for Name: imagestats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.imagestats (id, imageid, likes, dislikes, favourites, comments) FROM stdin;
+\.
+
+
+--
+-- Data for Name: logs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.logs (id, type, name, username, date) FROM stdin;
+1	insert_user	Username:Administrator		2023-05-26 15:50:33+01
+2	insert_stats	Username:Administrator		2023-05-26 15:50:33+01
+\.
+
+
+--
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sessions (id, userid, session, expires) FROM stdin;
+\.
+
+
+--
+-- Data for Name: userimagefavourites; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.userimagefavourites (userid, imageid, date) FROM stdin;
+\.
+
+
+--
+-- Data for Name: userimagevotes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.userimagevotes (userid, imageid, date, type) FROM stdin;
+\.
+
+
+--
+-- Data for Name: userinfo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.userinfo (id, username, password, join_date, type) FROM stdin;
+1	Administrator	$2y$10$Ebk79HvtmOvJEn0E1bbRyeIsHZPtm3El8D7TqZ6bL22XMEyHObUAi	2023-05-26 15:50:33+01	1
+\.
+
+
+--
+-- Data for Name: userstats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.userstats (id, total_uploaded, active_uploaded, userid, total_comments) FROM stdin;
+1	0	0	1	0
+\.
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
+
+
+--
+-- Name: imagecomments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.imagecomments_id_seq', 1, false);
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.images_id_seq', 1, false);
+
+
+--
+-- Name: imagestats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.imagestats_id_seq', 1, false);
+
+
+--
+-- Name: logs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.logs_id_seq', 2, true);
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.sessions_id_seq', 1, false);
+
+
+--
+-- Name: userinfo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.userinfo_id_seq', 1, true);
+
+
+--
+-- Name: userstats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.userstats_id_seq', 1, true);
+
+
+--
 -- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
