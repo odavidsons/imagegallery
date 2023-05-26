@@ -1,4 +1,6 @@
 <?php
+include('PHP/DBComments.php');
+$DBComments = new DBComments($dbconnect->conn);
 if (isset($_GET['error'])) {
     $error = $_GET['error'];
 } else {
@@ -13,7 +15,6 @@ if ($obj_image[0]->category == '') {
 } else {
     $img_category = $obj_image[0]->category;
 }
-
 ?>
 <div class="viewimage_content">
     <nav aria-label="breadcrumb">
@@ -45,15 +46,18 @@ if ($obj_image[0]->category == '') {
         </div>
         </div>
 
-        <img src="<?php echo $obj_image[0]->path ?>" alt="image-<?php echo $obj_image[0]->name ?>">
+        <div class="image_showImage">
+            <img src="<?php echo $obj_image[0]->path ?>" alt="image-<?php echo $obj_image[0]->name ?>">
+        </div>
 
+        <!-- Image info panel on the right -->
         <div class="image_info">
             <div class="card">
             <div class="card-body">
                 <?php
                 echo "<div class='container-flex'>";
                 //If the user is not the uploader of the image, block the action buttons
-                if ($_SESSION['username'] == $obj_image[0]->uploaded_by) {
+                if (isset($_SESSION['username']) && $_SESSION['username'] == $obj_image[0]->uploaded_by) {
                     //Show options
                     echo "<a class='btn align-middle' id='btn-edit' href='index.php?page=viewimage&id=$img_id&action=edit'>Edit <span class='material-symbols-outlined align-middle'>border_color</span></a>";
                     echo "<button class='btn align-middle' id='btn-delete' data-bs-toggle='modal' data-bs-target='#confirmationBox'>Delete <span class='material-symbols-outlined align-middle'>delete_forever</span></button>";
@@ -112,14 +116,14 @@ if ($obj_image[0]->category == '') {
                     $obj_imagestats = $DBAccess->getImageStats($obj_image[0]->id);
                     //Get the vote of the current user
                     $obj_userimagevote = $DBAccess->getUserImageVote($obj_image[0]->id);
-                    if (isset($obj_userimagevote)) {
+                    if (count($obj_userimagevote) > 0) {
                         $uservote = $obj_userimagevote[0]->type;
                     }  else {
                         $uservote = "";
                     }
                     //Get image favourite vote by the user
                     $obj_userimagevote = $DBAccess->getUserImageFavourite($obj_image[0]->id);
-                    if (isset($obj_userimagevote)) {
+                    if (count($obj_userimagevote) > 0) {
                         $userfavourite = 1;
                     }  else {
                         $userfavourite = 0;
@@ -134,9 +138,64 @@ if ($obj_image[0]->category == '') {
                     if (isset($_GET['message']) && $_GET['message'] != '') {
                         echo "<i>".$_GET['message']."</i>";
                     }
+                } else {
+                    //If image is beeing viewed in guest access
+                    $uservote = "";
+                    $userfavourite = 0;
+                    //Get the stats of the image to display
+                    $obj_imagestats = $DBAccess->getImageStats($obj_image[0]->id);
+                    echo "<div class='container-flex' id='viewimage_image_stats'>";
+                    echo "<nav><a id='like_btn' class='material-symbols-outlined align-middle'>thumb_up</a>&nbsp;<span class='align-middle'>".$obj_imagestats[0]->likes."</span></nav>";
+                    echo "<nav><a id='dislike_btn' class='material-symbols-outlined align-middle'>thumb_down</a>&nbsp;<span class='align-middle'>".$obj_imagestats[0]->dislikes."</span></nav>";
+                    echo "<nav><a id='favourite_btn' class='material-symbols-outlined align-middle'>star</a>&nbsp;<span class='align-middle'>".$obj_imagestats[0]->favourites."</span></nav>";
+                    echo "</div>";
                 }
                 ?>
             </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comment section -->
+    <div class="image_comment_section">
+        <div class="card">
+            <div class="card-body">
+            <?php
+                $obj_comments = $DBComments->getImageComments($obj_image[0]->id);
+                echo"<nav class='card-title'><span class='material-symbols-outlined align-middle'>comment</span><span>".count($obj_comments)."</span>&nbsp;Comments</nav>";
+                if (isset($obj_comments)) {
+                    for ($i = 0;$i < count($obj_comments);$i++) {
+                        echo "<div class='image_comment' id='image_comment".$obj_comments[0]->id."'>";
+                        echo "<span class='image_comment_user'><span class='material-symbols-outlined align-middle'>account_circle</span>".$obj_comments[$i]->username."</span>";
+                        if ($obj_comments[$i]->username == $_SESSION['username']) {
+                            echo "<a class='comment_delete_btn' href='index.php?page=imageAction&id=".$obj_image[0]->id."&comment=".$obj_comments[0]->id."&action=deleteImageComment'>Delete</a>";
+                        } 
+                        echo "<nav class='image_comment_text'>".$obj_comments[$i]->text."</nav>";
+                        echo "<nav class='image_comment_date'>".$obj_comments[$i]->date."</nav>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<nav>There are no comments yet. Be the first!</nav>";
+                }
+                ?>
+            </div>
+            <div class="card-footer">
+                <?php
+                if (isset($_SESSION['username']) && $_SESSION['username'] != '') {
+                    echo"<form action='index.php?page=imageAction&action=addImageComment' method='POST'>";
+                    echo"<label for='commentText' class='form-label'>Write a comment:</label>";
+                    echo"<textarea class='form-control' name='comment_text' id='commentText' cols='30' rows='4'></textarea>";
+                    echo"<input type='hidden' name='imgId' value='".$obj_image[0]->id."'>";
+                    echo"<button class='btn btn-dark' type='submit'>Post</button>";
+                    echo"</form>";
+                } else {
+                    echo"<label for='commentText' class='form-label'>Write a comment:</label>";
+                    echo"<textarea disabled class='form-control' name='comment_text' id='commentText' cols='30' rows='4'></textarea>";
+                    echo"<button disabled class='btn btn-dark'>Post</button>";
+                    echo "<nav class='text-danger'>Please login to post a comment.</nav>";
+                }
+                
+                ?>
             </div>
         </div>
     </div>

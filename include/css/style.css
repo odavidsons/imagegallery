@@ -139,14 +139,17 @@ html {
         margin: 0 auto;
         width: 80%;
     }
-    .viewimage_content img {
+    .viewimage_content .image_showImage {
         width: 40%;
+    }
+    .viewimage_content img {
+        width: 100%;
     }
     .viewimage_content .card {
         margin: 0 15px 0 15px;
     }
     .viewimage_content .image_info {
-        width: 50%;
+        width: 60%;
     }
     .viewimage_content .image_info .card {
         width: 100%;
@@ -160,6 +163,9 @@ html {
     }
     .viewimage_content .image_info .card select {
         margin: 0 0 15px 0;
+    }
+    #viewimage_image_stats {
+        margin-top: 15px;
     }
     #viewimage_image_stats nav {
         margin: 0 15px 0 0;
@@ -179,6 +185,38 @@ html {
     #viewimage_image_stats #favourite_btn:hover {
         scale: 1.1;
         color: rgb(226, 206, 21);
+    }
+    .viewimage_content .image_comment_section .card {
+        margin-top: 50px;
+        width: 100%;
+    }
+    .viewimage_content .image_comment_section .card-footer {
+        background-color: inherit;
+    }
+    .viewimage_content .image_comment_section .card .image_comment {
+        margin: 0 auto;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid rgb(177, 176, 176);
+        border-radius: 15px;
+    }
+    .viewimage_content .image_comment_section .card .image_comment .comment_delete_btn {
+        color: inherit;
+        position: absolute;
+        right: 0;
+    }
+    .viewimage_content .image_comment_section .card .image_comment_user {
+        margin-top: 15px;
+    }
+    .viewimage_content .image_comment_section .card .image_comment_text {
+        margin-top: 15px;
+    }
+    .viewimage_content .image_comment_section .card .image_comment_date {
+        margin-top: 15px;
+    }
+    .viewimage_content .image_comment_section .card button {
+        margin-top: 15px;
     }
 /* ViewImage Page Buttons */
     #btn-edit {

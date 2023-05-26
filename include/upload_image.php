@@ -15,7 +15,7 @@ $uploadOk = 1;
 //Prevent actions if user is not logged in
 if (isset($_SESSION['username'])) {
     if ($_FILES['imageFile']['tmp_name']!=''){
-        $target_dir = $site_path.'uploads/';
+        $target_dir = $_site_path.'uploads/';
         $target_file = $target_dir . basename($_FILES["imageFile"]["name"]);
         $image_selected = true;
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -59,7 +59,8 @@ if (isset($_SESSION['username'])) {
             //Update the current user's stats
             $total = ($obj_userstats[0]->total_uploaded + 1);
             $active = ($obj_userstats[0]->active_uploaded + 1);
-            $DBUsers->updateUSerStats($userId,$total,$active);
+            $total_comments = ($obj_userstats[0]->total_comments);
+            $DBUsers->updateUSerStats($userId,$total,$active,$total_comments);
         } else {
             $error = "There was an error uploading your image";
         }
