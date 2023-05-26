@@ -23,14 +23,14 @@ if (isset($_SESSION['username'])) {
 
         //Check if file is an image via mime type
         $check = mime_content_type($_FILES["imageFile"]["tmp_name"]);
-        if($check == "image/png" || $check == "image/jpeg") {
+        if($check == "image/png" || $check == "image/jpeg" || $check == "image/gif") {
             $uploadOk = 1;
         } else {
             $error = "File is not an image";
             $uploadOk = 0;
         }
         //Allow selected file types
-        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" ) {
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
             $error = "You must upload a file in one of these formats: png/jpeg/jpg.";
             $uploadOk = 0;
         }
