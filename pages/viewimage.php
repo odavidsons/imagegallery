@@ -20,7 +20,7 @@ if ($obj_image[0]->category == '') {
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php?page=home">Home</a></li>
         <li class="breadcrumb-item"><a href="index.php?page=search">Search</a></li>
-        <li class="breadcrumb-item"><?php echo $img_category ?></li>
+        <li class="breadcrumb-item"><a href="index.php?page=search&category=<?php echo $img_category ?>"><?php echo $img_category ?></a></li>
         <li class="breadcrumb-item active" aria-current="page">View</li>
     </ol>
     </nav>
@@ -84,8 +84,12 @@ if ($obj_image[0]->category == '') {
                         <option selected value='".$img_category."'>".$img_category."</option>";
                         echo "<option value=''>None</option>";
                         $obj_categories = $DBAccess->getCategories();
-                        for ($i = 0; $i < count((array)$obj_categories);$i++) {
-                            echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
+                        if (isset($obj_categories)) {
+                            for ($i = 0; $i < count((array)$obj_categories);$i++) {
+                                if ($obj_categories[$i]->name != $img_category) {
+                                    echo "<option value='".$obj_categories[$i]->name."'>".$obj_categories[$i]->name."</option>";
+                                }
+                            }
                         }
                         echo "</select>";
                         echo "<input type='hidden' name='imgId' value='".$obj_image[0]->id."'></input>";
