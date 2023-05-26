@@ -38,7 +38,6 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a>Home</a></li>
-        <li class="breadcrumb-item"><a href="index.php?page=home">Search</a></li>
         <li class="breadcrumb-item active" aria-current="page">Profile</li>
     </ol>
     </nav>
@@ -63,6 +62,7 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
         </div>
     </div>
     
+    <!-- Display user uploaded images -->
     <div class="card uploaded_images">
         <div class="card-body">
             <h5 class="card-title">Your images</h5>
@@ -105,6 +105,52 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
             ?>
         </div>
     </div>
+
+    <!-- Display user favouroutired images -->
+    <div class="card uploaded_images">
+        <div class="card-body">
+            <h5 class="card-title">Favourites</h5>
+            <?php
+            if (isset($obj_favourites) && count((array)$obj_favourites) > 0) {
+                echo "<div class='row row-cols-1 row-cols-md-auto g-4'>";
+                for ($i = 0;$i < count((array)$obj_favourites);$i++) {
+                    //Get the current image's stats
+                    $obj_imagestats = $DBAccess->getImageStats($obj_favourites[$i]->id);
+                    //Set the current image's caregory, based on if it's empty or not
+                    if ($obj_favourites[$i]->category == '') {
+                        $img_category = "None";
+                    } else {
+                        $img_category = $obj_favourites[$i]->category;
+                    }
+                    ?>
+                    <!-- Display user images -->
+                    <div class="col">
+                    <div class="card text-center" style="width: 12rem;">
+                        <a href="index.php?page=viewimage&id=<?php echo $obj_favourites[$i]->id ?>">
+                        <img src="<?php echo $obj_favourites[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_favourites[$i]->name ?>">
+                        </a>
+                        <div class="card-footer text-body-secondary">
+                            <?php echo $obj_favourites[$i]->name ?>
+                            <nav><?php echo $img_category ?></nav>
+                            <div class="container-flex" id="search_image_stats">
+                                <span><span class="material-symbols-outlined align-middle">thumb_up</span>&nbsp;<?php echo $obj_imagestats[0]->likes ?></span>
+                                <span><span class="material-symbols-outlined align-middle">thumb_down</span>&nbsp;<?php echo $obj_imagestats[0]->dislikes ?></span>
+                                <span><span class="material-symbols-outlined align-middle">star</span>&nbsp;<?php echo $obj_imagestats[0]->favourites ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <?php
+                }
+                echo "</div>";
+            } else {
+                echo "<p>You have no favourite images.</p>";
+            }
+            ?>
+        </div>
+    </div>
+
+    <!-- Profile actions -->
     <div class="card profile_actions">
         <div class="card-body">
             <h5 class="card-title">Profile Actions</h5>

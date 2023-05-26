@@ -1,6 +1,10 @@
 <?php
-
 $obj_images = $DBAccess->getImages();
+if (isset($_GET['category']) && $_GET['category'] != '') {
+    $category = $_GET['category'];
+} else {
+    $category = '';
+}
 ?>
 <div class="container-flex">
     <!-- Sidenav -->
@@ -97,6 +101,8 @@ $obj_images = $DBAccess->getImages();
     imageCards = document.getElementsByClassName("card");
     var images = Array.from(imageCards);
 
+    window.onload = getUrlCategory();
+
     //Filter by image name
     function searchByName() {
         //Get the search input
@@ -133,11 +139,23 @@ $obj_images = $DBAccess->getImages();
     }
 
     //Filter by image category
+    //Check if there is a category filter param on the url and filter the images by it
+    function getUrlCategory() {
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var urlCategory = url.searchParams.get("category");
+        if (urlCategory != null & urlCategory != "None") {
+            selectedCategory = document.getElementById("categorySelect");
+            selectedCategory.value = urlCategory;
+            getCategory();
+        }
+    }
+    //If there is no url param setting the search category
     //Get selected option
     function getCategory() {
         selectedCategory = document.getElementById("categorySelect").value;
         images.forEach((image) => {
-            if (selectedCategory != '') {
+            if (selectedCategory != "") {
                 //If an image has a differente category than the selected one, set it's display style to 'none'
                 if (image.getAttribute('data-category') != selectedCategory) {
                     image.style.display="none";

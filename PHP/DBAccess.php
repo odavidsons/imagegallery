@@ -161,7 +161,7 @@ class DBAccess {
         $row = pg_fetch_row($result, 0);
         $userId = $row[0];
 
-        $query = "SELECT * FROM images WHERE uploaded_by = '".$username."'";
+        $query = "SELECT * FROM images i INNER JOIN userimagefavourites u ON u.imageid = i.id WHERE u.userid = $userId";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
@@ -492,8 +492,6 @@ class DBAccess {
     >boolean
     */
     function updateUserImageVote($imgId,$type) {
-        //Generate a vote update log
-
         //Get the user's ID
         $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
         $row = pg_fetch_row($result, 0);
@@ -563,8 +561,6 @@ class DBAccess {
     >boolean
     */
     function deleteUserImageVote($imgId) {
-        //Generate a vote deletion log
-
         //Get the user's ID
         $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
         $row = pg_fetch_row($result, 0);
@@ -584,8 +580,6 @@ class DBAccess {
     Remove a user image favourite vote by the image ID
     */
     function deleteUserImageFavourite($username,$imgId) {
-        //Generate a vote deletion log
-
         //Get the user's ID
         $result = pg_query($this->conn, "SELECT id FROM userinfo WHERE username = '".$_SESSION['username']."'");
         $row = pg_fetch_row($result, 0);
