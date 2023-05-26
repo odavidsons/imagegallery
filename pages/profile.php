@@ -59,6 +59,7 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
             <br>
             <p>Total images uploaded: <?php echo $obj_userstats[0]->total_uploaded ?></p>
             <p>Active images: <?php echo $obj_userstats[0]->active_uploaded ?></p>
+            <p>Total comments posted: <?php echo $obj_userstats[0]->total_comments ?></p>
         </div>
     </div>
     
@@ -111,7 +112,7 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
         <div class="card-body">
             <h5 class="card-title">Favourites</h5>
             <?php
-            if (isset($obj_favourites) && count((array)$obj_favourites) > 0) {
+            if (count($obj_favourites) > 0) {
                 echo "<div class='row row-cols-1 row-cols-md-auto g-4'>";
                 for ($i = 0;$i < count((array)$obj_favourites);$i++) {
                     //Get the current image's stats

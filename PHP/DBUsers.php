@@ -80,7 +80,6 @@ class DBUsers{
         return ($this->parseResult($result));
     }
 
-
     /* 
     Get the type of a given user by it's username
     <string username
@@ -181,13 +180,13 @@ class DBUsers{
     <integer active
     >boolean
     */
-    function updateUSerStats($userId,$total,$active) {
+    function updateUSerStats($userId,$total,$active,$total_comments) {
         //Generate a stats update log
         $obj_user = $this->getUserById($userId);
         $obj_user_stats = $this->getStatsByUserId($userId);
-        $this->insertLog('update_stats','Username:'.$obj_user[0]->username.' | Old total:'.$obj_user_stats[0]->total.' | New total:'.$total.'Old active:'.$obj_user_stats[0]->active.' | New active:'.$active.'',$_SESSION['username']);
+        $this->insertLog('update_stats','Username:'.$obj_user[0]->username.' | Old total:'.$obj_user_stats[0]->total_uploaded.' | New total:'.$total.' | Old active:'.$obj_user_stats[0]->active_uploaded.' | New active:'.$active.'',$_SESSION['username'].' | Old total comments:'.$obj_user_stats[0]->total_comments.' | New total comments:'.$total_comments);
         
-        $query = "UPDATE userstats SET total_uploaded = '".$total."',active_uploaded = '".$active."' WHERE userid = '".$userId."'";
+        $query = "UPDATE userstats SET total_uploaded = '".$total."',active_uploaded = '".$active."',total_comments = '".$total_comments."' WHERE userid = '".$userId."'";
         $result = pg_query($this->conn, $query);
         if (!isset($result)) {
             echo pg_last_error($this->conn);
