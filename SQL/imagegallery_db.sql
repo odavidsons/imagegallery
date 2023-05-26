@@ -450,8 +450,6 @@ COPY public.imagestats (id, imageid, likes, dislikes, favourites, comments) FROM
 --
 
 COPY public.logs (id, type, name, username, date) FROM stdin;
-1	insert_user	Username:Administrator		2023-05-26 15:50:33+01
-2	insert_stats	Username:Administrator		2023-05-26 15:50:33+01
 \.
 
 
@@ -508,28 +506,28 @@ SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
 -- Name: imagecomments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.imagecomments_id_seq', 1, false);
+SELECT pg_catalog.setval('public.imagecomments_id_seq', 23, true);
 
 
 --
 -- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.images_id_seq', 1, false);
+SELECT pg_catalog.setval('public.images_id_seq', 1, true);
 
 
 --
 -- Name: imagestats_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.imagestats_id_seq', 1, false);
+SELECT pg_catalog.setval('public.imagestats_id_seq', 1, true);
 
 
 --
 -- Name: logs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.logs_id_seq', 2, true);
+SELECT pg_catalog.setval('public.logs_id_seq', 90, true);
 
 
 --
