@@ -33,7 +33,11 @@ It should look something like this <br>
 #6 - Import the SQL dump file into this new database. It is located in the SQL/ folder inside the project <br><br>
 `imagegallery=# \i "local path to the dump file"` <br><br>
 Apache default: <br><br>
-`imagegallery=# \i /var/www/html/imagegallery/SQL/imagegallery_db.sql`
+`imagegallery=# \i /var/www/html/imagegallery/SQL/imagegallery_db.sql` <br>
+
+<b>Note - </b>The database comes with a default administrator login: <br>
+Username: Administrator <br>
+Password: administrator <br>
 
 #7 - Change the configuration variables located in the config file 'config.php to match your host system's postgres credentials and website folder path <br>
 ```php

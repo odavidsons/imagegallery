@@ -184,7 +184,7 @@ class DBUsers{
         //Generate a stats update log
         $obj_user = $this->getUserById($userId);
         $obj_user_stats = $this->getStatsByUserId($userId);
-        $this->insertLog('update_stats','Username:'.$obj_user[0]->username.' | Old total:'.$obj_user_stats[0]->total_uploaded.' | New total:'.$total.' | Old active:'.$obj_user_stats[0]->active_uploaded.' | New active:'.$active.'',$_SESSION['username'].' | Old total comments:'.$obj_user_stats[0]->total_comments.' | New total comments:'.$total_comments);
+        $this->insertLog('update_stats','Username:'.$obj_user[0]->username.' | Old total:'.$obj_user_stats[0]->total_uploaded.' | New total:'.$total.' | Old active:'.$obj_user_stats[0]->active_uploaded.' | New active:'.$active.' | Old total comments:'.$obj_user_stats[0]->total_comments.' | New total comments:'.$total_comments.'',$_SESSION['username']);
         
         $query = "UPDATE userstats SET total_uploaded = '".$total."',active_uploaded = '".$active."',total_comments = '".$total_comments."' WHERE userid = '".$userId."'";
         $result = pg_query($this->conn, $query);
