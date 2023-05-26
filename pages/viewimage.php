@@ -165,14 +165,14 @@ if ($obj_image[0]->category == '') {
                 echo"<nav class='card-title'><span class='material-symbols-outlined align-middle'>comment</span>&nbsp;<span>".$obj_imagestats[0]->comments."</span>&nbsp;Comments</nav>";
                 if (isset($obj_comments)) {
                     for ($i = 0;$i < count($obj_comments);$i++) {
-                        echo "<div class='image_comment' id='image_comment".$obj_comments[0]->id."'>";
+                        echo "<div class='image_comment' id='image_comment".$obj_comments[$i]->id."'>";
                         echo "<span class='image_comment_user'><span class='material-symbols-outlined align-middle'>account_circle</span>".$obj_comments[$i]->username."</span>";
                         if ($obj_comments[$i]->username == $_SESSION['username']) {
                             //Comment options menu
                             echo "<div class='comment_delete_btn dropdown'>";
                             echo "<a href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false' title='Options'><span class='material-symbols-outlined align-middle'>list</span></a>";
                             echo "<ul class='dropdown-menu'>";
-                            echo "<a href='index.php?page=imageAction&id=".$obj_image[0]->id."&comment=".$obj_comments[0]->id."&action=deleteImageComment'>Delete</a>";
+                            echo "<a href='index.php?page=imageAction&id=".$obj_image[0]->id."&comment=".$obj_comments[$i]->id."&action=deleteImageComment'>Delete</a>";
                             echo "</ul>";
                             echo "</div>";
                         } 
