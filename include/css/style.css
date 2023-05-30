@@ -74,7 +74,7 @@ html {
     }
     .search_sidenav {
         background-color: rgb(65, 103, 146);
-        width: 15%;
+        width: 20%;
         height: 100vh;
     }
     .search_sidenav #search_name{
@@ -366,6 +366,22 @@ html {
 }
 
 @media only screen and (max-width: 500px) {
+    .alert {
+        width: 80%;
+    }
+    .container-centered {
+        height: 400px;
+    }
+    /* Home Page */
+    .home_content {
+        width: 100vw;
+        min-height: 100vh;
+    }
+    .home_content #home_welcome_card {
+        height: 60%;
+        width: 75%;
+    }
+    /* Search page */
     .search_sidenav {
         width: 50%;
     }
@@ -376,20 +392,182 @@ html {
     .search_sidenav #search_name input {
         font-size: 10px;
     }
+    .search_sidenav #search_name{
+        width: 95%;
+    }
+    .search_sidenav #categorySelect {
+        width: 95%;
+    }
     .search_sidenav #search_slider {
         font-size: 15px;
+        width: 95%;
     }
     .search_sidenav #search_category {
         font-size: 15px;
     }
+    .search_images {
+        width: 95%;
+    }
+    .search_images .card img {
+        max-height: 250px;
+    }
+    /* Viewimage page */
+    .viewimage_content {
+        width: 90%;
+    }
+    .viewimage_content .container-flex {
+        display: block;
+    }
+    .viewimage_content .image_showImage {
+        margin: 0 auto;
+        width: 90%;
+    }
+    .viewimage_content .card {
+        margin: 0 0 0 0;
+    }
+    .viewimage_content .image_info {
+        margin: 0 auto;
+        width: 90%;
+    }
     /* Viewimage page buttons */
     #btn-edit {
-        font-size: 12px;
+        font-size: 11px;
+        max-width: 22%;
+    }
+    #btn-delete {
+        font-size: 11px;
+        max-width: 22%;
+    }
+    /* Profile Page */
+    .profile_content {
+        width: 90%;
+    }
+    /* Upload Page */
+    .upload_content {
+        width: 90%;
+    }
+    /* Signup Page */
+    .signup_form {
+        padding: 25px;
+        width: 80%;
+    }
+    /* Login Page */
+    .login_form {
+        padding: 25px;
+        width: 80%;
+    }
+    /* Admin page */
+    .admin_sidenav {
+        width: 50%;
+    }
+    .admin_sidenav .sidenav_item {
+        min-height: 40px;
+        font-size: 15px;
+    }
+    .admin_content .card {
+        width: 94%;
+        max-height: 90vh;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .alert {
+        width: 80%;
+    }
+    /* Home Page */
+    .home_content {
+        width: 100vw;
+        min-height: 100vh;
+    }
+    .home_content #home_welcome_card {
+        height: 60%;
+        width: 75%;
+    }
+    /* Search page */
+    .search_sidenav {
+        width: 30%;
+    }
+    .search_sidenav .sidenav_item {
+        min-height: 40px;
+        font-size: 16px;
+    }
+    .search_sidenav #search_name input {
+        font-size: 10px;
+    }
+    .search_sidenav #search_name{
+        width: 95%;
+    }
+    .search_sidenav #categorySelect {
+        width: 95%;
+    }
+    .search_sidenav #search_slider {
+        font-size: 16px;
+        width: 95%;
+    }
+    .search_sidenav #search_category {
+        font-size: 16px;
+    }
+    .search_images {
+        width: 95%;
+    }
+    .search_images .card img {
+        max-height: 400px;
+    }
+    /* Viewimage page */
+    .viewimage_content {
+        width: 90%;
+    }
+    .viewimage_content .container-flex {
+        display: block;
+    }
+    .viewimage_content .image_showImage {
+        margin: 0 auto;
+        width: 90%;
+    }
+    .viewimage_content .card {
+        margin: 0 0 0 0;
+    }
+    .viewimage_content .image_info {
+        margin: 0 auto;
+        width: 90%;
+    }
+    /* Viewimage page buttons */
+    #btn-edit {
+        font-size: 13px;
         max-width: 25%;
     }
     #btn-delete {
-        font-size: 12px;
+        font-size: 13px;
         max-width: 25%;
     }
-    
+    /* Profile Page */
+    .profile_content {
+        width: 90%;
+    }
+    /* Upload Page */
+    .upload_content {
+        width: 90%;
+    }
+    /* Signup Page */
+    .signup_form {
+        padding: 25px;
+        width: 80%;
+    }
+    /* Login Page */
+    .login_form {
+        padding: 25px;
+        width: 80%;
+    }
+    /* Admin page */
+    .admin_sidenav {
+        width: 25%;
+    }
+    .admin_sidenav .sidenav_item {
+        min-height: 40px;
+        font-size: 16px;
+    }
+    .admin_content .card {
+        width: 93%;
+        max-height: 80vh;
+    }
 }
