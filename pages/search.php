@@ -67,9 +67,24 @@ if (isset($_GET['category']) && $_GET['category'] != '') {
                 for ($i = 0;$i < count((array)$obj_images);$i++) {
                     //Get the current image's stats
                     $obj_imagestats = $DBAccess->getImageStats($obj_images[$i]->id);
+                    //Get the vote of the current user
+                    $obj_userimagevote = $DBAccess->getUserImageVote($obj_images[$i]->id);
+                    if (count($obj_userimagevote) > 0) {
+                        $uservote = $obj_userimagevote[0]->type;
+                    }  else {
+                        $uservote = "";
+                    }
+                    //Get image favourite vote by the user
+                    $obj_userimagefavourite = $DBAccess->getUserImageFavourite($obj_images[$i]->id);
+                    if (count($obj_userimagefavourite) > 0) {
+                        $userfavourite = 1;
+                    }  else {
+                        $userfavourite = 0;
+                    }
                     ?>
                     <div class="col">
-                    <div class="card text-center" style="width: 18rem;" data-count="<?php echo $i+1 ?>" data-name="<?php echo $obj_images[$i]->name ?>" data-category="<?php echo $obj_images[$i]->category ?>">
+                    <!-- Every image displayed uses the 'data' attributes to handle it's information about filter types and votes that it has -->
+                    <div class="card text-center" style="width: 18rem;" data-count="<?php echo $i+1 ?>" data-name="<?php echo $obj_images[$i]->name ?>" data-category="<?php echo $obj_images[$i]->category ?>" data-vote="<?php echo $uservote ?>" data-favourite="<?php echo $userfavourite ?>">
                         <a href="index.php?page=viewimage&id=<?php echo $obj_images[$i]->id ?>">
                         <img src="<?php echo $obj_images[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_images[$i]->name ?>">
                         <div class="card-img-overlay" id="img_view_button">
@@ -79,9 +94,9 @@ if (isset($_GET['category']) && $_GET['category'] != '') {
                         <div class="card-footer text-body-secondary">
                             Name: <?php echo $obj_images[$i]->name ?>
                             <div class="container-flex" id="search_image_stats">
-                                <nav><span class="material-symbols-outlined align-middle">thumb_up</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->likes ?></span></nav>
-                                <nav><span class="material-symbols-outlined align-middle">thumb_down</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->dislikes ?></span></nav>
-                                <nav><span class="material-symbols-outlined align-middle">star</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->favourites ?></span></nav>
+                                <nav><span class="material-symbols-outlined align-middle" id="like_btn<?php echo $i+1 ?>">thumb_up</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->likes ?></span></nav>
+                                <nav><span class="material-symbols-outlined align-middle" id="dislike_btn<?php echo $i+1 ?>">thumb_down</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->dislikes ?></span></nav>
+                                <nav><span class="material-symbols-outlined align-middle" id="favourite_btn<?php echo $i+1 ?>">star</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->favourites ?></span></nav>
                                 <nav><span class="material-symbols-outlined align-middle">comment</span>&nbsp;<span class="align-middle"><?php echo $obj_imagestats[0]->comments ?></span></nav>
                             </div>
                         </div>
@@ -102,7 +117,8 @@ if (isset($_GET['category']) && $_GET['category'] != '') {
     imageCards = document.getElementsByClassName("card");
     var images = Array.from(imageCards);
 
-    window.onload = getUrlCategory();
+    //Functions that are running when the page loads
+    window.onload = getUrlCategory(),checkImageVote(),checkImageFavourite();
 
     //Filter by image name
     function searchByName() {
@@ -116,7 +132,6 @@ if (isset($_GET['category']) && $_GET['category'] != '') {
                     imageCards[i].style.display="none";
                 }
             }
-            
     }
 
     //Change display ammount
@@ -169,5 +184,29 @@ if (isset($_GET['category']) && $_GET['category'] != '') {
         });
     }
 
-    
+    //If the user has voted on an image, set the color of the vote's icon accordingly
+    function checkImageVote() {
+        images.forEach((image) => {
+            //Go through all the rendered images, and check the 'data-vote' attribute.
+            if (image.getAttribute('data-vote') == "like") {
+                //Then, we find the element of the corresponding vote button by it's ID and change the color to be active.
+                var likeBtn = document.getElementById("like_btn"+image.getAttribute('data-count'));
+                likeBtn.style.color = "rgb(82, 127, 179)";
+            } else if (image.getAttribute('data-vote') == "dislike") {
+                var dislikeBtn = document.getElementById("dislike_btn"+image.getAttribute('data-count'));
+                dislikeBtn.style.color = "rgb(185, 34, 29)";
+            }
+        });
+    }
+
+    //If the user has favourited an image, set the color of the favourite icon accordingly
+    //Same functionality as the function 'checkImageVote()'
+    function checkImageFavourite() {
+        images.forEach((image) => {
+            if (image.getAttribute('data-favourite') == "1") {
+                var likeBtn = document.getElementById("favourite_btn"+image.getAttribute('data-count'));
+                likeBtn.style.color = "rgb(226, 206, 21)";
+            }
+        });
+    }
 </script>
