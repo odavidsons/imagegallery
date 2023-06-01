@@ -73,6 +73,20 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
                 for ($i = 0;$i < count((array)$obj_images);$i++) {
                     //Get the current image's stats
                     $obj_imagestats = $DBAccess->getImageStats($obj_images[$i]->id);
+                    //Get the vote of the current user
+                    $obj_userimagevote = $DBAccess->getUserImageVote($obj_images[$i]->id);
+                    if (count($obj_userimagevote) > 0) {
+                        $uservote = $obj_userimagevote[0]->type;
+                    }  else {
+                        $uservote = "";
+                    }
+                    //Get image favourite vote by the user
+                    $obj_userimagefavourite = $DBAccess->getUserImageFavourite($obj_images[$i]->id);
+                    if (count($obj_userimagefavourite) > 0) {
+                        $userfavourite = 1;
+                    }  else {
+                        $userfavourite = 0;
+                    }
                     //Set the current image's caregory, based on if it's empty or not
                     if ($obj_images[$i]->category == '') {
                         $img_category = "None";
@@ -82,7 +96,7 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
                     ?>
                     <!-- Display user images -->
                     <div class="col">
-                    <div class="card text-center" style="width: 12rem;">
+                    <div class="card text-center" style="width: 12rem;" data-count="<?php echo $i+1 ?>" data-vote="<?php echo $uservote ?>" data-favourite="<?php echo $userfavourite ?>">
                         <a href="index.php?page=viewimage&id=<?php echo $obj_images[$i]->id ?>">
                         <img src="<?php echo $obj_images[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_images[$i]->name ?>">
                         </a>
@@ -90,9 +104,9 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
                             <?php echo $obj_images[$i]->name ?>
                             <nav><?php echo $img_category ?></nav>
                             <div class="container-flex" id="search_image_stats">
-                                <span><span class="material-symbols-outlined align-middle">thumb_up</span>&nbsp;<?php echo $obj_imagestats[0]->likes ?></span>
-                                <span><span class="material-symbols-outlined align-middle">thumb_down</span>&nbsp;<?php echo $obj_imagestats[0]->dislikes ?></span>
-                                <span><span class="material-symbols-outlined align-middle">star</span>&nbsp;<?php echo $obj_imagestats[0]->favourites ?></span>
+                                <span><span class="material-symbols-outlined align-middle" id="like_btn<?php echo $i+1 ?>">thumb_up</span>&nbsp;<?php echo $obj_imagestats[0]->likes ?></span>
+                                <span><span class="material-symbols-outlined align-middle" id="dislike_btn<?php echo $i+1 ?>">thumb_down</span>&nbsp;<?php echo $obj_imagestats[0]->dislikes ?></span>
+                                <span><span class="material-symbols-outlined align-middle" id="favourite_btn<?php echo $i+1 ?>">star</span>&nbsp;<?php echo $obj_imagestats[0]->favourites ?></span>
                             </div>
                         </div>
                     </div>
@@ -107,7 +121,7 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
         </div>
     </div>
 
-    <!-- Display user favouroutired images -->
+    <!-- Display user favourited images -->
     <div class="card uploaded_images">
         <div class="card-body">
             <h5 class="card-title">Favourites</h5>
@@ -117,6 +131,20 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
                 for ($i = 0;$i < count((array)$obj_favourites);$i++) {
                     //Get the current image's stats
                     $obj_imagestats = $DBAccess->getImageStats($obj_favourites[$i]->id);
+                     //Get the vote of the current user
+                    $obj_userimagevote = $DBAccess->getUserImageVote($obj_favourites[$i]->id);
+                    if (count($obj_userimagevote) > 0) {
+                        $uservote = $obj_userimagevote[0]->type;
+                    }  else {
+                        $uservote = "";
+                    }
+                    //Get image favourite vote by the user
+                    $obj_userimagefavourite = $DBAccess->getUserImageFavourite($obj_favourites[$i]->id);
+                    if (count($obj_userimagefavourite) > 0) {
+                        $userfavourite = 1;
+                    }  else {
+                        $userfavourite = 0;
+                    }
                     //Set the current image's caregory, based on if it's empty or not
                     if ($obj_favourites[$i]->category == '') {
                         $img_category = "None";
@@ -126,7 +154,7 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
                     ?>
                     <!-- Display user images -->
                     <div class="col">
-                    <div class="card text-center" style="width: 12rem;">
+                    <div class="card text-center" style="width: 12rem;" data-count="<?php echo $i+1 ?>" data-vote="<?php echo $uservote ?>" data-favourite="<?php echo $userfavourite ?>">
                         <a href="index.php?page=viewimage&id=<?php echo $obj_favourites[$i]->id ?>">
                         <img src="<?php echo $obj_favourites[$i]->path ?>" class="card-img-top" alt="image-<?php echo $obj_favourites[$i]->name ?>">
                         </a>
@@ -134,9 +162,9 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
                             <?php echo $obj_favourites[$i]->name ?>
                             <nav><?php echo $img_category ?></nav>
                             <div class="container-flex" id="search_image_stats">
-                                <span><span class="material-symbols-outlined align-middle">thumb_up</span>&nbsp;<?php echo $obj_imagestats[0]->likes ?></span>
-                                <span><span class="material-symbols-outlined align-middle">thumb_down</span>&nbsp;<?php echo $obj_imagestats[0]->dislikes ?></span>
-                                <span><span class="material-symbols-outlined align-middle">star</span>&nbsp;<?php echo $obj_imagestats[0]->favourites ?></span>
+                                <span><span class="material-symbols-outlined align-middle" id="like_btn<?php echo $i+1 ?>">thumb_up</span>&nbsp;<?php echo $obj_imagestats[0]->likes ?></span>
+                                <span><span class="material-symbols-outlined align-middle" id="dislike_btn<?php echo $i+1 ?>">thumb_down</span>&nbsp;<?php echo $obj_imagestats[0]->dislikes ?></span>
+                                <span><span class="material-symbols-outlined align-middle" id="favourite_btn<?php echo $i+1 ?>">star</span>&nbsp;<?php echo $obj_imagestats[0]->favourites ?></span>
                             </div>
                         </div>
                     </div>
@@ -164,3 +192,37 @@ $obj_favourites = $DBAccess->getUserFavouriteImages($username); //FIX THE QUERY 
         </div>
     </div>
 </div>
+<script>
+    //Get the image card elements and store in an array
+    imageCards = document.getElementsByClassName("card");
+    var images = Array.from(imageCards);
+
+    //Functions that are running when the page loads
+    window.onload = checkImageVote(),checkImageFavourite();
+
+    //If the user has voted on an image, set the color of the vote's icon accordingly
+    function checkImageVote() {
+        images.forEach((image) => {
+            //Go through all the rendered images, and check the 'data-vote' attribute.
+            if (image.getAttribute('data-vote') == "like") {
+                //Then, we find the element of the corresponding vote button by it's ID and change the color to be active.
+                var likeBtn = document.getElementById("like_btn"+image.getAttribute('data-count'));
+                likeBtn.style.color = "rgb(82, 127, 179)";
+            } else if (image.getAttribute('data-vote') == "dislike") {
+                var dislikeBtn = document.getElementById("dislike_btn"+image.getAttribute('data-count'));
+                dislikeBtn.style.color = "rgb(185, 34, 29)";
+            }
+        });
+    }
+
+    //If the user has favourited an image, set the color of the favourite icon accordingly
+    //Same functionality as the function 'checkImageVote()'
+    function checkImageFavourite() {
+        images.forEach((image) => {
+            if (image.getAttribute('data-favourite') == "1") {
+                var likeBtn = document.getElementById("favourite_btn"+image.getAttribute('data-count'));
+                likeBtn.style.color = "rgb(226, 206, 21)";
+            }
+        });
+    }
+</script>

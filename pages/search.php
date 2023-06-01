@@ -67,19 +67,21 @@ if (isset($_GET['category']) && $_GET['category'] != '') {
                 for ($i = 0;$i < count((array)$obj_images);$i++) {
                     //Get the current image's stats
                     $obj_imagestats = $DBAccess->getImageStats($obj_images[$i]->id);
-                    //Get the vote of the current user
-                    $obj_userimagevote = $DBAccess->getUserImageVote($obj_images[$i]->id);
-                    if (count($obj_userimagevote) > 0) {
-                        $uservote = $obj_userimagevote[0]->type;
-                    }  else {
-                        $uservote = "";
-                    }
-                    //Get image favourite vote by the user
-                    $obj_userimagefavourite = $DBAccess->getUserImageFavourite($obj_images[$i]->id);
-                    if (count($obj_userimagefavourite) > 0) {
-                        $userfavourite = 1;
-                    }  else {
-                        $userfavourite = 0;
+                    if (isset($_SESSION['username']) && $_SESSION['username'] != '') {
+                        //Get the vote of the current user
+                        $obj_userimagevote = $DBAccess->getUserImageVote($obj_images[$i]->id);
+                        if (count($obj_userimagevote) > 0) {
+                            $uservote = $obj_userimagevote[0]->type;
+                        }  else {
+                            $uservote = "";
+                        }
+                        //Get image favourite vote by the user
+                        $obj_userimagefavourite = $DBAccess->getUserImageFavourite($obj_images[$i]->id);
+                        if (count($obj_userimagefavourite) > 0) {
+                            $userfavourite = 1;
+                        }  else {
+                            $userfavourite = 0;
+                        }
                     }
                     ?>
                     <div class="col">
